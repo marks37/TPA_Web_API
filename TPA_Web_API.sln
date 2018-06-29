@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2005
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TPA_Web_API", "TPA_Web_API\TPA_Web_API.csproj", "{F6BDFC93-0C30-4592-AD9D-4A573196AA2C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F6BDFC93-0C30-4592-AD9D-4A573196AA2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6BDFC93-0C30-4592-AD9D-4A573196AA2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6BDFC93-0C30-4592-AD9D-4A573196AA2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6BDFC93-0C30-4592-AD9D-4A573196AA2C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F56C5343-C38D-4812-BFEE-F52FD35F9FD7}
+	EndGlobalSection
+EndGlobal
