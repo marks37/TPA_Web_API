@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7afd4ac11a4b40aa93d7bbfc42a6d433" Name="Diagram1" ZoomLevel="77">
+        <EntityTypeShape EntityType="TPA_ImplemModel.Ref_User" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TPA_ImplemModel.Data_Initiative" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="TPA_ImplemModel.Data_Branch_Allocation" Width="1.5" PointX="3.375" PointY="3.75" />
+        <EntityTypeShape EntityType="TPA_ImplemModel.Ref_User_Profile" Width="1.5" PointX="8" PointY="5" />
+        <AssociationConnector Association="TPA_ImplemModel.FK_Ref_User_Profile_Ref_User" />
+        <EntityTypeShape EntityType="TPA_ImplemModel.Ref_Branch_APD" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="TPA_ImplemModel.Ref_Branch_Assignment" Width="1.5" PointX="8" PointY="1.5" />
+        <AssociationConnector Association="TPA_ImplemModel.FK_Ref_Branch_Assignment_Ref_Branch_APD" />
+        <AssociationConnector Association="TPA_ImplemModel.FK_Ref_Branch_Assignment_Ref_User" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <h2>All Initiatives</h2>
+        <ul id="initiatives"></ul>
+        <p id="initiative"></p>
+    </div>
+    <div>
+        <h2>Search by ID</h2>
+        <input type="text" id="initID" size="5" />
+        <input type="button" value="Search" onclick="find()" />
+    </div>
+    <div>
+        <h2>Search by Branch ID</h2>
+        <input type="text" id="branchID" size="5" />
+        <input type="button" value="Search" onclick="findbybranchID()" />
+    </div>
+
+
+    <script src="Scripts/jquery-3.3.1.min.js"></script>
+    <script>
+        var uri = "api/initiatives";
+        
+        $(document).ready(function () {
+            //Send an AJAX request
+            $.getJSON(uri)
+                .done(function (data) {
+                    //on success, 'data' contains a list of products.
+                    $.each(data, function (key, item) {
+                        //Add a list item for the product.
+                        $('<li>', { text: formatItem(item) }).appendTo($('#initiative'));
+                    });
+                });
+        });
+
+        function formatItem(item) {
+            return item.TPB_ID + " " + item.Initiative_Title;
+        }
+
+        function find() {
+            alert("hello world!");
+            var id = $("#initID").val();
+            $.getJSON(uri + '/' + id)
+                .done(function (data) {
+                    $("#initiative").text(formatItem(data));
+                })
+                .fail(function (jqXHR, textStatus, err) {
+                    $("#initiative").text('Error: ' + err);
+                });
+        }
+
+        function findbybranchID() {
+            var branchID = $("#branchID").val();
+            var test = 'api/branches/' + branchID + '/initiatives';
+            $.getJSON(test)
+                .done(function (data) {
+                    //$("#initiative").text(data.Initiative.Initiative_Title);
+
+                    $.each(data, function (key, item) {
+                        //Add a list item for the product.
+                        $('<li>', { text: formatItem(item) }).appendTo($('#initiatives'));
+                    });
+
+                })
+                .fail(function (jqXHR, textStatus, err) {
+                    $("#initiative").text('Error: ' + err);
+                });
+        }
+
+    </script>
+
+
+
+</body>
+</html>

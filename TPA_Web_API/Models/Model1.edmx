@@ -1,0 +1,444 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TPA_ImplemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Data_Branch_Allocation">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TPB_ID" Type="varchar" MaxLength="50" />
+          <Property Name="Account" Type="varchar" MaxLength="50" />
+          <Property Name="Branch_ID" Type="int" />
+          <Property Name="Branch_Allocation" Type="int" />
+          <Property Name="Remarks" Type="varchar" MaxLength="255" />
+          <Property Name="Materials" Type="varchar" MaxLength="50" />
+          <Property Name="Created_At" Type="datetime" />
+          <Property Name="Created_By" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Data_Initiative">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TPB_ID" Type="varchar" MaxLength="50" />
+          <Property Name="Year" Type="varchar" MaxLength="50" />
+          <Property Name="Month" Type="varchar" MaxLength="50" />
+          <Property Name="Channel" Type="varchar" MaxLength="50" />
+          <Property Name="Agency" Type="varchar" MaxLength="50" />
+          <Property Name="Initiative_Type" Type="varchar" MaxLength="50" />
+          <Property Name="Initiative_Sub_Type" Type="varchar" MaxLength="50" />
+          <Property Name="Category" Type="varchar" MaxLength="50" />
+          <Property Name="Division" Type="varchar" MaxLength="50" />
+          <Property Name="Brand" Type="varchar" MaxLength="50" />
+          <Property Name="Initiative_Title" Type="varchar" MaxLength="50" />
+          <Property Name="Materials" Type="varchar" MaxLength="50" />
+          <Property Name="Start_Date" Type="date" />
+          <Property Name="End_Date" Type="date" />
+          <Property Name="Account" Type="varchar" MaxLength="50" />
+          <Property Name="Sell_in_date" Type="date" />
+          <Property Name="Allocation" Type="int" />
+          <Property Name="Created_At" Type="datetime" Nullable="false" />
+          <Property Name="Created_By" Type="varchar" MaxLength="50" />
+          <Property Name="Modified_At" Type="datetime" />
+          <Property Name="Modified_By" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Ref_Branch_APD">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Agency" Type="varchar" MaxLength="50" />
+          <Property Name="Channel" Type="varchar" MaxLength="50" />
+          <Property Name="Area" Type="varchar" MaxLength="50" />
+          <Property Name="CDS" Type="varchar" MaxLength="50" />
+          <Property Name="Distributor" Type="varchar" MaxLength="50" />
+          <Property Name="AccountGroup" Type="varchar" MaxLength="50" />
+          <Property Name="BranchName" Type="varchar" MaxLength="50" />
+          <Property Name="BranchCode" Type="varchar" MaxLength="50" />
+          <Property Name="Address" Type="varchar" MaxLength="50" />
+          <Property Name="SFA_ID" Type="varchar" MaxLength="50" />
+          <Property Name="Province" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="City" Type="varchar" MaxLength="50" />
+          <Property Name="Classification" Type="varchar" MaxLength="50" />
+          <Property Name="TeamLead" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Ref_Branch_Assignment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Branch_ID" Type="int" />
+          <Property Name="User_ID" Type="int" />
+          <Property Name="status" Type="varchar" MaxLength="50" />
+          <Property Name="Created_At" Type="datetime" />
+          <Property Name="Created_By" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Ref_User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="HASH" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="SALT" Type="varbinary" MaxLength="512" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Ref_User_Profile">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Firstname" Type="varchar" MaxLength="50" />
+          <Property Name="Lastname" Type="varchar" MaxLength="50" />
+          <Property Name="Position" Type="varchar" MaxLength="50" />
+          <Property Name="Contact_Number" Type="varchar" MaxLength="50" />
+          <Property Name="Address" Type="varchar" MaxLength="50" />
+          <Property Name="User_ID" Type="int" />
+        </EntityType>
+        <Association Name="FK_Ref_Branch_Assignment_Ref_Branch_APD">
+          <End Role="Ref_Branch_APD" Type="Self.Ref_Branch_APD" Multiplicity="0..1" />
+          <End Role="Ref_Branch_Assignment" Type="Self.Ref_Branch_Assignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ref_Branch_APD">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Ref_Branch_Assignment">
+              <PropertyRef Name="Branch_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ref_Branch_Assignment_Ref_User">
+          <End Role="Ref_User" Type="Self.Ref_User" Multiplicity="0..1" />
+          <End Role="Ref_Branch_Assignment" Type="Self.Ref_Branch_Assignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ref_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Ref_Branch_Assignment">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ref_User_Profile_Ref_User">
+          <End Role="Ref_User" Type="Self.Ref_User" Multiplicity="0..1" />
+          <End Role="Ref_User_Profile" Type="Self.Ref_User_Profile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ref_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Ref_User_Profile">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TPA_ImplemModelStoreContainer">
+          <EntitySet Name="Data_Branch_Allocation" EntityType="Self.Data_Branch_Allocation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Data_Initiative" EntityType="Self.Data_Initiative" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ref_Branch_APD" EntityType="Self.Ref_Branch_APD" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ref_Branch_Assignment" EntityType="Self.Ref_Branch_Assignment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ref_User" EntityType="Self.Ref_User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ref_User_Profile" EntityType="Self.Ref_User_Profile" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Ref_Branch_Assignment_Ref_Branch_APD" Association="Self.FK_Ref_Branch_Assignment_Ref_Branch_APD">
+            <End Role="Ref_Branch_APD" EntitySet="Ref_Branch_APD" />
+            <End Role="Ref_Branch_Assignment" EntitySet="Ref_Branch_Assignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ref_Branch_Assignment_Ref_User" Association="Self.FK_Ref_Branch_Assignment_Ref_User">
+            <End Role="Ref_User" EntitySet="Ref_User" />
+            <End Role="Ref_Branch_Assignment" EntitySet="Ref_Branch_Assignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ref_User_Profile_Ref_User" Association="Self.FK_Ref_User_Profile_Ref_User">
+            <End Role="Ref_User" EntitySet="Ref_User" />
+            <End Role="Ref_User_Profile" EntitySet="Ref_User_Profile" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TPA_ImplemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Ref_User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HASH" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SALT" Type="Binary" MaxLength="512" FixedLength="false" Nullable="false" />
+          <NavigationProperty Name="Ref_User_Profile" Relationship="TPA_ImplemModel.FK_Ref_User_Profile_Ref_User" FromRole="Ref_User" ToRole="Ref_User_Profile" />
+          <NavigationProperty Name="Ref_Branch_Assignment" Relationship="TPA_ImplemModel.FK_Ref_Branch_Assignment_Ref_User" FromRole="Ref_User" ToRole="Ref_Branch_Assignment" />
+        </EntityType>
+        <EntityContainer Name="TPA_ImplemEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Ref_User" EntityType="Self.Ref_User" />
+          <EntitySet Name="Data_Initiative" EntityType="TPA_ImplemModel.Data_Initiative" />
+          <EntitySet Name="Data_Branch_Allocation" EntityType="TPA_ImplemModel.Data_Branch_Allocation" />
+          <EntitySet Name="Ref_User_Profile" EntityType="TPA_ImplemModel.Ref_User_Profile" />
+          <AssociationSet Name="FK_Ref_User_Profile_Ref_User" Association="TPA_ImplemModel.FK_Ref_User_Profile_Ref_User">
+            <End Role="Ref_User" EntitySet="Ref_User" />
+            <End Role="Ref_User_Profile" EntitySet="Ref_User_Profile" />
+          </AssociationSet>
+          <EntitySet Name="Ref_Branch_APD" EntityType="TPA_ImplemModel.Ref_Branch_APD" />
+          <EntitySet Name="Ref_Branch_Assignment" EntityType="TPA_ImplemModel.Ref_Branch_Assignment" />
+          <AssociationSet Name="FK_Ref_Branch_Assignment_Ref_Branch_APD" Association="TPA_ImplemModel.FK_Ref_Branch_Assignment_Ref_Branch_APD">
+            <End Role="Ref_Branch_APD" EntitySet="Ref_Branch_APD" />
+            <End Role="Ref_Branch_Assignment" EntitySet="Ref_Branch_Assignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ref_Branch_Assignment_Ref_User" Association="TPA_ImplemModel.FK_Ref_Branch_Assignment_Ref_User">
+            <End Role="Ref_User" EntitySet="Ref_User" />
+            <End Role="Ref_Branch_Assignment" EntitySet="Ref_Branch_Assignment" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Data_Initiative">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TPB_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Year" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Month" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Channel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Agency" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Initiative_Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Initiative_Sub_Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Division" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Brand" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Initiative_Title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Materials" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Start_Date" Type="DateTime" Precision="0" />
+          <Property Name="End_Date" Type="DateTime" Precision="0" />
+          <Property Name="Account" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Sell_in_date" Type="DateTime" Precision="0" />
+          <Property Name="Allocation" Type="Int32" />
+          <Property Name="Created_At" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Modified_At" Type="DateTime" Precision="3" />
+          <Property Name="Modified_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Data_Branch_Allocation">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TPB_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Account" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Branch_ID" Type="Int32" />
+          <Property Name="Branch_Allocation" Type="Int32" />
+          <Property Name="Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Materials" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Created_At" Type="DateTime" Precision="3" />
+          <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Ref_User_Profile">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Contact_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="User_ID" Type="Int32" />
+          <NavigationProperty Name="Ref_User" Relationship="TPA_ImplemModel.FK_Ref_User_Profile_Ref_User" FromRole="Ref_User_Profile" ToRole="Ref_User" />
+        </EntityType>
+        <Association Name="FK_Ref_User_Profile_Ref_User">
+          <End Type="TPA_ImplemModel.Ref_User" Role="Ref_User" Multiplicity="0..1" />
+          <End Type="TPA_ImplemModel.Ref_User_Profile" Role="Ref_User_Profile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ref_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Ref_User_Profile">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Ref_Branch_APD">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Agency" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Channel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Area" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CDS" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Distributor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AccountGroup" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BranchName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BranchCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SFA_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Province" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Classification" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TeamLead" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Ref_Branch_Assignment" Relationship="TPA_ImplemModel.FK_Ref_Branch_Assignment_Ref_Branch_APD" FromRole="Ref_Branch_APD" ToRole="Ref_Branch_Assignment" />
+        </EntityType>
+        <EntityType Name="Ref_Branch_Assignment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Branch_ID" Type="Int32" />
+          <Property Name="User_ID" Type="Int32" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Created_At" Type="DateTime" Precision="3" />
+          <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Ref_Branch_APD" Relationship="TPA_ImplemModel.FK_Ref_Branch_Assignment_Ref_Branch_APD" FromRole="Ref_Branch_Assignment" ToRole="Ref_Branch_APD" />
+          <NavigationProperty Name="Ref_User" Relationship="TPA_ImplemModel.FK_Ref_Branch_Assignment_Ref_User" FromRole="Ref_Branch_Assignment" ToRole="Ref_User" />
+        </EntityType>
+        <Association Name="FK_Ref_Branch_Assignment_Ref_Branch_APD">
+          <End Type="TPA_ImplemModel.Ref_Branch_APD" Role="Ref_Branch_APD" Multiplicity="0..1" />
+          <End Type="TPA_ImplemModel.Ref_Branch_Assignment" Role="Ref_Branch_Assignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ref_Branch_APD">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Ref_Branch_Assignment">
+              <PropertyRef Name="Branch_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ref_Branch_Assignment_Ref_User">
+          <End Type="TPA_ImplemModel.Ref_User" Role="Ref_User" Multiplicity="0..1" />
+          <End Type="TPA_ImplemModel.Ref_Branch_Assignment" Role="Ref_Branch_Assignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ref_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Ref_Branch_Assignment">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TPA_ImplemModelStoreContainer" CdmEntityContainer="TPA_ImplemEntities">
+          <EntitySetMapping Name="Ref_User">
+            <EntityTypeMapping TypeName="TPA_ImplemModel.Ref_User">
+              <MappingFragment StoreEntitySet="Ref_User">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="HASH" ColumnName="HASH" />
+                <ScalarProperty Name="SALT" ColumnName="SALT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Data_Initiative">
+            <EntityTypeMapping TypeName="TPA_ImplemModel.Data_Initiative">
+              <MappingFragment StoreEntitySet="Data_Initiative">
+                <ScalarProperty Name="Modified_By" ColumnName="Modified_By" />
+                <ScalarProperty Name="Modified_At" ColumnName="Modified_At" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Created_At" ColumnName="Created_At" />
+                <ScalarProperty Name="Allocation" ColumnName="Allocation" />
+                <ScalarProperty Name="Sell_in_date" ColumnName="Sell_in_date" />
+                <ScalarProperty Name="Account" ColumnName="Account" />
+                <ScalarProperty Name="End_Date" ColumnName="End_Date" />
+                <ScalarProperty Name="Start_Date" ColumnName="Start_Date" />
+                <ScalarProperty Name="Materials" ColumnName="Materials" />
+                <ScalarProperty Name="Initiative_Title" ColumnName="Initiative_Title" />
+                <ScalarProperty Name="Brand" ColumnName="Brand" />
+                <ScalarProperty Name="Division" ColumnName="Division" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="Initiative_Sub_Type" ColumnName="Initiative_Sub_Type" />
+                <ScalarProperty Name="Initiative_Type" ColumnName="Initiative_Type" />
+                <ScalarProperty Name="Agency" ColumnName="Agency" />
+                <ScalarProperty Name="Channel" ColumnName="Channel" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="TPB_ID" ColumnName="TPB_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Data_Branch_Allocation">
+            <EntityTypeMapping TypeName="TPA_ImplemModel.Data_Branch_Allocation">
+              <MappingFragment StoreEntitySet="Data_Branch_Allocation">
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Created_At" ColumnName="Created_At" />
+                <ScalarProperty Name="Materials" ColumnName="Materials" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="Branch_Allocation" ColumnName="Branch_Allocation" />
+                <ScalarProperty Name="Branch_ID" ColumnName="Branch_ID" />
+                <ScalarProperty Name="Account" ColumnName="Account" />
+                <ScalarProperty Name="TPB_ID" ColumnName="TPB_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ref_User_Profile">
+            <EntityTypeMapping TypeName="TPA_ImplemModel.Ref_User_Profile">
+              <MappingFragment StoreEntitySet="Ref_User_Profile">
+                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Contact_Number" ColumnName="Contact_Number" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ref_Branch_APD">
+            <EntityTypeMapping TypeName="TPA_ImplemModel.Ref_Branch_APD">
+              <MappingFragment StoreEntitySet="Ref_Branch_APD">
+                <ScalarProperty Name="TeamLead" ColumnName="TeamLead" />
+                <ScalarProperty Name="Classification" ColumnName="Classification" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="SFA_ID" ColumnName="SFA_ID" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="BranchCode" ColumnName="BranchCode" />
+                <ScalarProperty Name="BranchName" ColumnName="BranchName" />
+                <ScalarProperty Name="AccountGroup" ColumnName="AccountGroup" />
+                <ScalarProperty Name="Distributor" ColumnName="Distributor" />
+                <ScalarProperty Name="CDS" ColumnName="CDS" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
+                <ScalarProperty Name="Channel" ColumnName="Channel" />
+                <ScalarProperty Name="Agency" ColumnName="Agency" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ref_Branch_Assignment">
+            <EntityTypeMapping TypeName="TPA_ImplemModel.Ref_Branch_Assignment">
+              <MappingFragment StoreEntitySet="Ref_Branch_Assignment">
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Created_At" ColumnName="Created_At" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
+                <ScalarProperty Name="Branch_ID" ColumnName="Branch_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
