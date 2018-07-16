@@ -12,23 +12,27 @@ namespace TPA_Web_API.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Ref_User
+    public partial class Ref_Implem_Status
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Ref_User()
+        public Ref_Implem_Status()
         {
-            this.Ref_Branch_Assignment = new HashSet<Ref_Branch_Assignment>();
-            this.Ref_User_Profile = new HashSet<Ref_User_Profile>();
+            this.Data_Branch_Allocation = new HashSet<Data_Branch_Allocation>();
+            this.Ref_Implem_Issue = new HashSet<Ref_Implem_Issue>();
         }
     
-        public int UserID { get; set; }
-        public string Username { get; set; }
-        public string HASH { get; set; }
-        public byte[] SALT { get; set; }
+        public int implem_status_id { get; set; }
+        public string implem_status { get; set; }
+        public Nullable<System.DateTime> created_at { get; set; }
+        public string created_by { get; set; }
+        public Nullable<System.DateTime> deleted_at { get; set; }
+        public string deleted_by { get; set; }
+        public Nullable<System.DateTime> modified_at { get; set; }
+        public string modified_by { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Ref_Branch_Assignment> Ref_Branch_Assignment { get; set; }
+        public virtual ICollection<Data_Branch_Allocation> Data_Branch_Allocation { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Ref_User_Profile> Ref_User_Profile { get; set; }
+        public virtual ICollection<Ref_Implem_Issue> Ref_Implem_Issue { get; set; }
     }
 }

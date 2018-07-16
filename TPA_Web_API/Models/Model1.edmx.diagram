@@ -4,16 +4,32 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7afd4ac11a4b40aa93d7bbfc42a6d433" Name="Diagram1" ZoomLevel="77">
-        <EntityTypeShape EntityType="TPA_ImplemModel.Ref_User" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TPA_ImplemModel.Data_Initiative" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="TPA_ImplemModel.Data_Branch_Allocation" Width="1.5" PointX="3.375" PointY="3.75" />
-        <EntityTypeShape EntityType="TPA_ImplemModel.Ref_User_Profile" Width="1.5" PointX="8" PointY="5" />
-        <AssociationConnector Association="TPA_ImplemModel.FK_Ref_User_Profile_Ref_User" />
-        <EntityTypeShape EntityType="TPA_ImplemModel.Ref_Branch_APD" Width="1.5" PointX="0.75" PointY="6.75" />
-        <EntityTypeShape EntityType="TPA_ImplemModel.Ref_Branch_Assignment" Width="1.5" PointX="8" PointY="1.5" />
+      <Diagram DiagramId="7afd4ac11a4b40aa93d7bbfc42a6d433" Name="Diagram1" ZoomLevel="121">
+        <EntityTypeShape EntityType="TPA_ImplemModel.Data_Branch_Allocation" Width="1.5" PointX="5.75" PointY="3.875" />
+        <EntityTypeShape EntityType="TPA_ImplemModel.Data_Initiative" Width="1.5" PointX="5.75" PointY="8.5" />
+        <EntityTypeShape EntityType="TPA_ImplemModel.Data_Offtake" Width="1.5" PointX="8.125" PointY="4.375" />
+        <EntityTypeShape EntityType="TPA_ImplemModel.Data_TPA_Delivery" Width="1.5" PointX="8" PointY="8.5" />
+        <EntityTypeShape EntityType="TPA_ImplemModel.Ref_Branch_APD" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TPA_ImplemModel.Ref_Branch_Assignment" Width="1.5" PointX="3" PointY="5.5" />
+        <EntityTypeShape EntityType="TPA_ImplemModel.Ref_Implem_Status" Width="1.5" PointX="0.75" PointY="12.5" />
+        <EntityTypeShape EntityType="TPA_ImplemModel.Ref_User" Width="1.5" PointX="0.75" PointY="5.75" />
+        <EntityTypeShape EntityType="TPA_ImplemModel.Ref_User_Profile" Width="1.5" PointX="3" PointY="8.875" />
+        <AssociationConnector Association="TPA_ImplemModel.FK_Data_Offtake_Data_Branch_Allocation" />
         <AssociationConnector Association="TPA_ImplemModel.FK_Ref_Branch_Assignment_Ref_Branch_APD" />
         <AssociationConnector Association="TPA_ImplemModel.FK_Ref_Branch_Assignment_Ref_User" />
+        <AssociationConnector Association="TPA_ImplemModel.FK_Ref_User_Profile_Ref_User" />
+        <AssociationConnector Association="TPA_ImplemModel.FK_Data_Branch_Allocation_Ref_Implem_Status" />
+        <EntityTypeShape EntityType="TPA_ImplemModel.Data_Branch_Delivery" Width="1.5" PointX="8" PointY="14.625" />
+        <EntityTypeShape EntityType="TPA_ImplemModel.Data_Installation_Issue" Width="1.5" PointX="7" PointY="0.5" />
+        <EntityTypeShape EntityType="TPA_ImplemModel.Ref_Branch_Delivery_Status" Width="1.5" PointX="3.375" PointY="2.25" />
+        <EntityTypeShape EntityType="TPA_ImplemModel.Ref_Implem_Issue" Width="1.5" PointX="3" PointY="14.125" />
+        <AssociationConnector Association="TPA_ImplemModel.FK_Data_Branch_Delivery_Data_Branch_Allocation" />
+        <AssociationConnector Association="TPA_ImplemModel.FK_Data_Installation_Issue_Data_Branch_Allocation" />
+        <AssociationConnector Association="TPA_ImplemModel.FK_Ref_Implem_Issue_Ref_Implem_Status" />
+        <EntityTypeShape EntityType="TPA_ImplemModel.Ref_TPA_Calendar" Width="1.5" PointX="10.375" PointY="0.75" />
+        <EntityTypeShape EntityType="TPA_ImplemModel.Ref_TPA_Delivery_Status" Width="1.5" PointX="10.375" PointY="5.75" />
+        <EntityTypeShape EntityType="TPA_ImplemModel.Data_Installation" Width="1.5" PointX="8" PointY="19.375" />
+        <AssociationConnector Association="TPA_ImplemModel.FK_Data_Installation_Data_Branch_Allocation" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

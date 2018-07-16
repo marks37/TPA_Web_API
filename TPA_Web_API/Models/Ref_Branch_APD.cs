@@ -20,21 +20,21 @@ namespace TPA_Web_API.Models
             this.Ref_Branch_Assignment = new HashSet<Ref_Branch_Assignment>();
         }
     
-        public int ID { get; set; }
-        public string Agency { get; set; }
-        public string Channel { get; set; }
-        public string Area { get; set; }
-        public string CDS { get; set; }
-        public string Distributor { get; set; }
-        public string AccountGroup { get; set; }
-        public string BranchName { get; set; }
-        public string BranchCode { get; set; }
-        public string Address { get; set; }
-        public string SFA_ID { get; set; }
-        public string Province { get; set; }
-        public string City { get; set; }
-        public string Classification { get; set; }
-        public string TeamLead { get; set; }
+        public int branch_apd_id { get; set; }
+        public string agency { get; set; }
+        public string channel { get; set; }
+        public string area { get; set; }
+        public string cds { get; set; }
+        public string distributor { get; set; }
+        public string account { get; set; }
+        public string branch_name { get; set; }
+        public string branch_code { get; set; }
+        public string address { get; set; }
+        public string sfa_id { get; set; }
+        public string province { get; set; }
+        public string city { get; set; }
+        public string classification { get; set; }
+        public string team_lead { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Ref_Branch_Assignment> Ref_Branch_Assignment { get; set; }

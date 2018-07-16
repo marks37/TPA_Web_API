@@ -12,16 +12,11 @@ namespace TPA_Web_API.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Ref_User_Profile
+    public partial class Ref_TPA_Delivery_Status
     {
-        public int id { get; set; }
-        public string firstname { get; set; }
-        public string lastname { get; set; }
-        public string position { get; set; }
-        public string contact { get; set; }
-        public string address { get; set; }
-        public Nullable<int> User_ID { get; set; }
-    
-        public virtual Ref_User Ref_User { get; set; }
+        public int tpa_delivery_status_id { get; set; }
+        public string tpa_delivery_status_value { get; set; }
+        public Nullable<System.DateTime> created_at { get; set; }
+        public string created_by { get; set; }
     }
 }

@@ -12,16 +12,17 @@ namespace TPA_Web_API.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Ref_Branch_Assignment
+    public partial class Ref_Implem_Issue
     {
-        public int branch_assignment_id { get; set; }
-        public Nullable<int> branch_id { get; set; }
-        public Nullable<int> user_id { get; set; }
-        public string status { get; set; }
+        public int implem_issue_id { get; set; }
+        public Nullable<int> implem_status_id { get; set; }
+        public string category { get; set; }
+        public string issue { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public string created_by { get; set; }
+        public Nullable<System.DateTime> modified_at { get; set; }
+        public string modified_by { get; set; }
     
-        public virtual Ref_Branch_APD Ref_Branch_APD { get; set; }
-        public virtual Ref_User Ref_User { get; set; }
+        public virtual Ref_Implem_Status Ref_Implem_Status { get; set; }
     }
 }

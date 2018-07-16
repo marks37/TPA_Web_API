@@ -12,16 +12,20 @@ namespace TPA_Web_API.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Ref_Branch_Assignment
+    public partial class Data_Offtake
     {
-        public int branch_assignment_id { get; set; }
-        public Nullable<int> branch_id { get; set; }
-        public Nullable<int> user_id { get; set; }
-        public string status { get; set; }
+        public int offtake_id { get; set; }
+        public Nullable<int> branch_allocation_id { get; set; }
+        public string week_tag { get; set; }
+        public string month_tag { get; set; }
+        public Nullable<bool> is_approved { get; set; }
+        public string source { get; set; }
+        public Nullable<int> offtake { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public string created_by { get; set; }
+        public Nullable<System.DateTime> modified_at { get; set; }
+        public string modified_by { get; set; }
     
-        public virtual Ref_Branch_APD Ref_Branch_APD { get; set; }
-        public virtual Ref_User Ref_User { get; set; }
+        public virtual Data_Branch_Allocation Data_Branch_Allocation { get; set; }
     }
 }

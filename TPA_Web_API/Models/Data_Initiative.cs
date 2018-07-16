@@ -14,27 +14,27 @@ namespace TPA_Web_API.Models
     
     public partial class Data_Initiative
     {
-        public int ID { get; set; }
-        public string TPB_ID { get; set; }
-        public string Year { get; set; }
-        public string Month { get; set; }
-        public string Channel { get; set; }
-        public string Agency { get; set; }
-        public string Initiative_Type { get; set; }
-        public string Initiative_Sub_Type { get; set; }
-        public string Category { get; set; }
-        public string Division { get; set; }
-        public string Brand { get; set; }
-        public string Initiative_Title { get; set; }
-        public string Materials { get; set; }
-        public Nullable<System.DateTime> Start_Date { get; set; }
-        public Nullable<System.DateTime> End_Date { get; set; }
-        public string Account { get; set; }
-        public Nullable<System.DateTime> Sell_in_date { get; set; }
-        public Nullable<int> Allocation { get; set; }
-        public System.DateTime Created_At { get; set; }
-        public string Created_By { get; set; }
-        public Nullable<System.DateTime> Modified_At { get; set; }
-        public string Modified_By { get; set; }
+        public int initiative_id { get; set; }
+        public string tpb_id { get; set; }
+        public string year { get; set; }
+        public string month { get; set; }
+        public string channel { get; set; }
+        public string agency { get; set; }
+        public string initiative_type { get; set; }
+        public string initiative_sub_type { get; set; }
+        public string category { get; set; }
+        public string division { get; set; }
+        public string brand { get; set; }
+        public string initiative_title { get; set; }
+        public string materials { get; set; }
+        public Nullable<System.DateTime> start_date { get; set; }
+        public Nullable<System.DateTime> end_date { get; set; }
+        public string account { get; set; }
+        public Nullable<System.DateTime> sell_in_date { get; set; }
+        public Nullable<int> account_allocation { get; set; }
+        public Nullable<System.DateTime> created_at { get; set; }
+        public string created_by { get; set; }
+        public Nullable<System.DateTime> modified_at { get; set; }
+        public string modified_by { get; set; }
     }
 }

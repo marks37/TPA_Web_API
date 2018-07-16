@@ -14,14 +14,37 @@ namespace TPA_Web_API.Models
     
     public partial class Data_Branch_Allocation
     {
-        public int ID { get; set; }
-        public string TPB_ID { get; set; }
-        public string Account { get; set; }
-        public Nullable<int> Branch_ID { get; set; }
-        public Nullable<int> Branch_Allocation { get; set; }
-        public string Remarks { get; set; }
-        public string Materials { get; set; }
-        public Nullable<System.DateTime> Created_At { get; set; }
-        public string Created_By { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Data_Branch_Allocation()
+        {
+            this.Data_Offtake = new HashSet<Data_Offtake>();
+            this.Data_Branch_Delivery = new HashSet<Data_Branch_Delivery>();
+            this.Data_Installation_Issue = new HashSet<Data_Installation_Issue>();
+            this.Data_Installation = new HashSet<Data_Installation>();
+        }
+    
+        public int branch_allocation_id { get; set; }
+        public string tpb_id { get; set; }
+        public string account { get; set; }
+        public Nullable<int> branch_id { get; set; }
+        public Nullable<int> branch_allocation { get; set; }
+        public string remarks { get; set; }
+        public string materials { get; set; }
+        public Nullable<System.DateTime> created_at { get; set; }
+        public string created_by { get; set; }
+        public Nullable<int> implem_status_id { get; set; }
+        public string implem_status { get; set; }
+        public string offtake_analysis { get; set; }
+        public Nullable<System.DateTime> date_completed { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Data_Offtake> Data_Offtake { get; set; }
+        public virtual Ref_Implem_Status Ref_Implem_Status { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Data_Branch_Delivery> Data_Branch_Delivery { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Data_Installation_Issue> Data_Installation_Issue { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Data_Installation> Data_Installation { get; set; }
     }
 }
