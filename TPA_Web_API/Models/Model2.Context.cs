@@ -13,10 +13,10 @@ namespace TPA_Web_API.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class TPA_ImplemEntities : DbContext
+    public partial class Entities : DbContext
     {
-        public TPA_ImplemEntities()
-            : base("name=TPA_ImplemEntities")
+        public Entities()
+            : base("name=TPA_Implem2Entities")
         {
         }
     
@@ -25,21 +25,20 @@ namespace TPA_Web_API.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Data_Branch_Allocation> Data_Branch_Allocation { get; set; }
         public virtual DbSet<Data_Initiative> Data_Initiative { get; set; }
-        public virtual DbSet<Data_Offtake> Data_Offtake { get; set; }
-        public virtual DbSet<Data_TPA_Delivery> Data_TPA_Delivery { get; set; }
+        public virtual DbSet<Data_Initiative_Branch> Data_Initiative_Branch { get; set; }
+        public virtual DbSet<Data_Initiative_Branch_File> Data_Initiative_Branch_File { get; set; }
+        public virtual DbSet<Data_Initiative_Branch_Line> Data_Initiative_Branch_Line { get; set; }
+        public virtual DbSet<Data_Initiative_Delivery> Data_Initiative_Delivery { get; set; }
+        public virtual DbSet<Data_Initiative_Delivery_Line> Data_Initiative_Delivery_Line { get; set; }
         public virtual DbSet<Ref_Branch_APD> Ref_Branch_APD { get; set; }
         public virtual DbSet<Ref_Branch_Assignment> Ref_Branch_Assignment { get; set; }
-        public virtual DbSet<Ref_Implem_Status> Ref_Implem_Status { get; set; }
-        public virtual DbSet<Ref_User> Ref_User { get; set; }
-        public virtual DbSet<Ref_User_Profile> Ref_User_Profile { get; set; }
-        public virtual DbSet<Data_Branch_Delivery> Data_Branch_Delivery { get; set; }
-        public virtual DbSet<Data_Installation_Issue> Data_Installation_Issue { get; set; }
         public virtual DbSet<Ref_Branch_Delivery_Status> Ref_Branch_Delivery_Status { get; set; }
         public virtual DbSet<Ref_Implem_Issue> Ref_Implem_Issue { get; set; }
+        public virtual DbSet<Ref_Implem_Status> Ref_Implem_Status { get; set; }
         public virtual DbSet<Ref_TPA_Calendar> Ref_TPA_Calendar { get; set; }
         public virtual DbSet<Ref_TPA_Delivery_Status> Ref_TPA_Delivery_Status { get; set; }
-        public virtual DbSet<Data_Installation> Data_Installation { get; set; }
+        public virtual DbSet<Ref_User> Ref_User { get; set; }
+        public virtual DbSet<Ref_User_Profile> Ref_User_Profile { get; set; }
     }
 }

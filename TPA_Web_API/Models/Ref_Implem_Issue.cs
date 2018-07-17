@@ -22,6 +22,8 @@ namespace TPA_Web_API.Models
         public string created_by { get; set; }
         public Nullable<System.DateTime> modified_at { get; set; }
         public string modified_by { get; set; }
+        public Nullable<System.DateTime> deleted_at { get; set; }
+        public string deleted_by { get; set; }
     
         public virtual Ref_Implem_Status Ref_Implem_Status { get; set; }
     }

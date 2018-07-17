@@ -21,10 +21,10 @@ namespace TPA_Web_API.Models
             this.Ref_User_Profile = new HashSet<Ref_User_Profile>();
         }
     
-        public int UserID { get; set; }
-        public string Username { get; set; }
-        public string HASH { get; set; }
-        public byte[] SALT { get; set; }
+        public int user_id { get; set; }
+        public string username { get; set; }
+        public string hash { get; set; }
+        public byte[] salt { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Ref_Branch_Assignment> Ref_Branch_Assignment { get; set; }

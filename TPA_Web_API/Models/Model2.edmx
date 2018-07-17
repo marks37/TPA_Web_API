@@ -1,0 +1,1166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TPA_Implem2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Data_Initiative">
+          <Key>
+            <PropertyRef Name="initiative_id" />
+          </Key>
+          <Property Name="initiative_id" Type="int" Nullable="false" />
+          <Property Name="tpb_id" Type="varchar" MaxLength="50" />
+          <Property Name="month" Type="varchar" MaxLength="50" />
+          <Property Name="year" Type="varchar" MaxLength="50" />
+          <Property Name="channel" Type="varchar" MaxLength="50" />
+          <Property Name="agency" Type="varchar" MaxLength="50" />
+          <Property Name="initiative_type" Type="varchar" MaxLength="50" />
+          <Property Name="initiative_sub_type" Type="varchar" MaxLength="50" />
+          <Property Name="category" Type="varchar" MaxLength="50" />
+          <Property Name="division" Type="varchar" MaxLength="50" />
+          <Property Name="brand" Type="varchar" MaxLength="50" />
+          <Property Name="initiative_title" Type="varchar" MaxLength="50" />
+          <Property Name="materials" Type="varchar" MaxLength="50" />
+          <Property Name="start_date" Type="date" />
+          <Property Name="end_date" Type="date" />
+          <Property Name="account" Type="varchar" MaxLength="50" />
+          <Property Name="sell_in_date" Type="date" />
+          <Property Name="account_allocation" Type="int" />
+          <Property Name="created_at" Type="datetime" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="modified_at" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="deleted_at" Type="datetime" />
+          <Property Name="deleted_by" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Data_Initiative_Branch">
+          <Key>
+            <PropertyRef Name="initiative_branch_id" />
+          </Key>
+          <Property Name="initiative_branch_id" Type="int" Nullable="false" />
+          <Property Name="tpb_id" Type="varchar" MaxLength="50" />
+          <Property Name="materials" Type="varchar" MaxLength="50" />
+          <Property Name="account" Type="varchar" MaxLength="50" />
+          <Property Name="branch_apd_id" Type="int" />
+          <Property Name="branch_delivery_status_id" Type="int" />
+          <Property Name="branch_delivery_date" Type="date" />
+          <Property Name="branch_delivery_status" Type="varchar" MaxLength="50" />
+          <Property Name="branch_allocation" Type="int" />
+          <Property Name="total_bundled" Type="int" />
+          <Property Name="percent_bundled" Type="varchar" MaxLength="50" />
+          <Property Name="start_of_implem" Type="date" />
+          <Property Name="implem_status" Type="varchar" MaxLength="50" />
+          <Property Name="implem_status_id" Type="int" />
+          <Property Name="implem_issue" Type="varchar" MaxLength="200" />
+          <Property Name="implem_issue_id" Type="int" />
+          <Property Name="date_of_completion" Type="date" />
+          <Property Name="total_offtake" Type="int" />
+          <Property Name="percent_offtake" Type="varchar" MaxLength="50" />
+          <Property Name="ending_inventory" Type="int" />
+          <Property Name="offtake_analysis" Type="varchar" MaxLength="50" />
+          <Property Name="created_at" Type="datetime" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="modified_at" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="deleted_at" Type="datetime" />
+          <Property Name="deleted_by" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Data_Initiative_Branch_File">
+          <Key>
+            <PropertyRef Name="initiative_branch_file_id" />
+          </Key>
+          <Property Name="initiative_branch_file_id" Type="int" Nullable="false" />
+          <Property Name="file_name" Type="varchar" MaxLength="50" />
+          <Property Name="file_type" Type="varchar" MaxLength="50" />
+          <Property Name="file_category" Type="varchar" MaxLength="50" />
+          <Property Name="remarks" Type="varchar" MaxLength="50" />
+          <Property Name="uploaded_at" Type="datetime" />
+          <Property Name="uploaded_by" Type="varchar" MaxLength="50" />
+          <Property Name="modified_at" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="deleted_at" Type="datetime" />
+          <Property Name="deleted_by" Type="varchar" MaxLength="50" />
+          <Property Name="initiative_branch_line_id" Type="int" />
+        </EntityType>
+        <EntityType Name="Data_Initiative_Branch_Line">
+          <Key>
+            <PropertyRef Name="initiative_branch_line_id" />
+          </Key>
+          <Property Name="initiative_branch_line_id" Type="int" Nullable="false" />
+          <Property Name="week_no" Type="int" />
+          <Property Name="month_no" Type="int" />
+          <Property Name="branch_delivered_qty" Type="int" />
+          <Property Name="actual_bundled" Type="int" />
+          <Property Name="implem_issue" Type="varchar" MaxLength="50" />
+          <Property Name="implem_issue_id" Type="int" />
+          <Property Name="actual_offtake" Type="int" />
+          <Property Name="status" Type="varchar" MaxLength="50" />
+          <Property Name="is_approved" Type="bit" />
+          <Property Name="approved_at" Type="datetime" />
+          <Property Name="approved_by" Type="varchar" MaxLength="50" />
+          <Property Name="created_at" Type="datetime" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="modified_at" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="deleted_at" Type="datetime" />
+          <Property Name="deleted_by" Type="varchar" MaxLength="50" />
+          <Property Name="source" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Data_Initiative_Delivery">
+          <Key>
+            <PropertyRef Name="initiative_delivery_id" />
+          </Key>
+          <Property Name="initiative_delivery_id" Type="int" Nullable="false" />
+          <Property Name="tpb_id" Type="varchar" MaxLength="50" />
+          <Property Name="materials" Type="varchar" MaxLength="50" />
+          <Property Name="account" Type="varchar" MaxLength="50" />
+          <Property Name="approval_date" Type="date" />
+          <Property Name="tpa_delivery_date" Type="date" />
+          <Property Name="tpa_delivery_status" Type="varchar" MaxLength="50" />
+          <Property Name="tpa_delivery_status_id" Type="int" />
+          <Property Name="remarks" Type="varchar" MaxLength="50" />
+          <Property Name="created_at" Type="datetime" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="modified_at" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="deleted_at" Type="datetime" />
+          <Property Name="deleted_by" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Data_Initiative_Delivery_Line">
+          <Key>
+            <PropertyRef Name="initiative_delivery_line_id" />
+          </Key>
+          <Property Name="initiative_delivery_line_id" Type="int" Nullable="false" />
+          <Property Name="initiative_delivery_id" Type="int" />
+          <Property Name="tpa_delivered_qty" Type="int" />
+          <Property Name="remarks" Type="varchar" MaxLength="50" />
+          <Property Name="created_at" Type="datetime" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="modified_at" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="deleted_at" Type="datetime" />
+          <Property Name="deleted_by" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Ref_Branch_APD">
+          <Key>
+            <PropertyRef Name="branch_apd_id" />
+          </Key>
+          <Property Name="branch_apd_id" Type="int" Nullable="false" />
+          <Property Name="agency" Type="varchar" MaxLength="50" />
+          <Property Name="channel" Type="varchar" MaxLength="50" />
+          <Property Name="area" Type="varchar" MaxLength="50" />
+          <Property Name="cds" Type="varchar" MaxLength="50" />
+          <Property Name="distributor" Type="varchar" MaxLength="50" />
+          <Property Name="account" Type="varchar" MaxLength="50" />
+          <Property Name="branch_name" Type="varchar" MaxLength="200" />
+          <Property Name="branch_code" Type="varchar" MaxLength="200" />
+          <Property Name="address" Type="varchar(max)" />
+          <Property Name="sfa_id" Type="varchar(max)" />
+          <Property Name="province" Type="varchar(max)" />
+          <Property Name="city" Type="varchar(max)" />
+          <Property Name="classification" Type="varchar" MaxLength="50" />
+          <Property Name="team_lead" Type="varchar" MaxLength="50" />
+          <Property Name="created_at" Type="datetime" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="modified_at" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="deleted_at" Type="datetime" />
+          <Property Name="deleted_by" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Ref_Branch_Assignment">
+          <Key>
+            <PropertyRef Name="branch_assignment_id" />
+          </Key>
+          <Property Name="branch_assignment_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="branch_apd_id" Type="int" />
+          <Property Name="user_id" Type="int" />
+          <Property Name="status" Type="varchar" MaxLength="50" />
+          <Property Name="created_at" Type="datetime" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="modified_at" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="deleted_at" Type="datetime" />
+          <Property Name="deleted_by" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Ref_Branch_Delivery_Status">
+          <Key>
+            <PropertyRef Name="branch_delivery_status_id" />
+          </Key>
+          <Property Name="branch_delivery_status_id" Type="int" Nullable="false" />
+          <Property Name="branch_delivery_status_value" Type="varchar" MaxLength="50" />
+          <Property Name="created_at" Type="datetime" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="modified_at" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="deleted_at" Type="datetime" />
+          <Property Name="deleted_by" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Ref_Implem_Issue">
+          <Key>
+            <PropertyRef Name="implem_issue_id" />
+          </Key>
+          <Property Name="implem_issue_id" Type="int" Nullable="false" />
+          <Property Name="implem_status_id" Type="int" />
+          <Property Name="category" Type="varchar" MaxLength="50" />
+          <Property Name="issue" Type="varchar" MaxLength="50" />
+          <Property Name="created_at" Type="datetime" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="modified_at" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="deleted_at" Type="datetime" />
+          <Property Name="deleted_by" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Ref_Implem_Status">
+          <Key>
+            <PropertyRef Name="implem_status_id" />
+          </Key>
+          <Property Name="implem_status_id" Type="int" Nullable="false" />
+          <Property Name="implem_status_val" Type="varchar" MaxLength="50" />
+          <Property Name="created_at" Type="datetime" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="modified_at" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="deleted_at" Type="datetime" />
+          <Property Name="deleted_by" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Ref_TPA_Calendar">
+          <Key>
+            <PropertyRef Name="tpa_calendar_id" />
+          </Key>
+          <Property Name="tpa_calendar_id" Type="int" Nullable="false" />
+          <Property Name="year_period" Type="varchar" MaxLength="50" />
+          <Property Name="month_name" Type="varchar" MaxLength="50" />
+          <Property Name="month_alias" Type="varchar" MaxLength="50" />
+          <Property Name="month_number" Type="int" />
+          <Property Name="week_number" Type="int" />
+          <Property Name="week_start" Type="date" />
+          <Property Name="week_end" Type="date" />
+          <Property Name="cutoff_date" Type="date" />
+          <Property Name="created_at" Type="datetime" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="modified_at" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="deleted_at" Type="datetime" />
+          <Property Name="deleted_by" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Ref_TPA_Delivery_Status">
+          <Key>
+            <PropertyRef Name="tpa_delivery_status_id" />
+          </Key>
+          <Property Name="tpa_delivery_status_id" Type="int" Nullable="false" />
+          <Property Name="tpa_delivery_status_value" Type="varchar" MaxLength="50" />
+          <Property Name="created_at" Type="datetime" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="modified_at" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="deleted_at" Type="datetime" />
+          <Property Name="deleted_by" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Ref_User">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="hash" Type="varchar(max)" />
+          <Property Name="salt" Type="varbinary" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Ref_User_Profile">
+          <Key>
+            <PropertyRef Name="user_profile_id" />
+          </Key>
+          <Property Name="user_profile_id" Type="int" Nullable="false" />
+          <Property Name="firstname" Type="varchar" MaxLength="50" />
+          <Property Name="lastname" Type="varchar" MaxLength="50" />
+          <Property Name="position" Type="varchar" MaxLength="50" />
+          <Property Name="contact" Type="varchar" MaxLength="50" />
+          <Property Name="address" Type="varchar" MaxLength="50" />
+          <Property Name="user_id" Type="int" />
+          <Property Name="created_at" Type="datetime" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="modified_at" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="deleted_at" Type="datetime" />
+          <Property Name="deleted_by" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_Data_Initiative_Branch_Line_Data_Initiative_Branch_File">
+          <End Role="Data_Initiative_Branch_File" Type="Self.Data_Initiative_Branch_File" Multiplicity="1" />
+          <End Role="Data_Initiative_Branch_Line" Type="Self.Data_Initiative_Branch_Line" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Data_Initiative_Branch_File">
+              <PropertyRef Name="initiative_branch_file_id" />
+            </Principal>
+            <Dependent Role="Data_Initiative_Branch_Line">
+              <PropertyRef Name="initiative_branch_line_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Data_Initiative_Branch_Ref_Branch_APD">
+          <End Role="Ref_Branch_APD" Type="Self.Ref_Branch_APD" Multiplicity="0..1" />
+          <End Role="Data_Initiative_Branch" Type="Self.Data_Initiative_Branch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ref_Branch_APD">
+              <PropertyRef Name="branch_apd_id" />
+            </Principal>
+            <Dependent Role="Data_Initiative_Branch">
+              <PropertyRef Name="branch_apd_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Data_Initiative_Delivery_Line_Data_Initiative_Delivery">
+          <End Role="Data_Initiative_Delivery" Type="Self.Data_Initiative_Delivery" Multiplicity="0..1" />
+          <End Role="Data_Initiative_Delivery_Line" Type="Self.Data_Initiative_Delivery_Line" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Data_Initiative_Delivery">
+              <PropertyRef Name="initiative_delivery_id" />
+            </Principal>
+            <Dependent Role="Data_Initiative_Delivery_Line">
+              <PropertyRef Name="initiative_delivery_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ref_Branch_Assignment_Ref_Branch_APD">
+          <End Role="Ref_Branch_APD" Type="Self.Ref_Branch_APD" Multiplicity="0..1" />
+          <End Role="Ref_Branch_Assignment" Type="Self.Ref_Branch_Assignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ref_Branch_APD">
+              <PropertyRef Name="branch_apd_id" />
+            </Principal>
+            <Dependent Role="Ref_Branch_Assignment">
+              <PropertyRef Name="branch_apd_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ref_Branch_Assignment_Ref_User">
+          <End Role="Ref_User" Type="Self.Ref_User" Multiplicity="0..1" />
+          <End Role="Ref_Branch_Assignment" Type="Self.Ref_Branch_Assignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ref_User">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="Ref_Branch_Assignment">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ref_Implem_Issue_Ref_Implem_Status">
+          <End Role="Ref_Implem_Status" Type="Self.Ref_Implem_Status" Multiplicity="0..1" />
+          <End Role="Ref_Implem_Issue" Type="Self.Ref_Implem_Issue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ref_Implem_Status">
+              <PropertyRef Name="implem_status_id" />
+            </Principal>
+            <Dependent Role="Ref_Implem_Issue">
+              <PropertyRef Name="implem_status_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ref_User_Profile_Ref_User">
+          <End Role="Ref_User" Type="Self.Ref_User" Multiplicity="0..1" />
+          <End Role="Ref_User_Profile" Type="Self.Ref_User_Profile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ref_User">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="Ref_User_Profile">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TPA_Implem2ModelStoreContainer">
+          <EntitySet Name="Data_Initiative" EntityType="Self.Data_Initiative" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Data_Initiative_Branch" EntityType="Self.Data_Initiative_Branch" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Data_Initiative_Branch_File" EntityType="Self.Data_Initiative_Branch_File" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Data_Initiative_Branch_Line" EntityType="Self.Data_Initiative_Branch_Line" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Data_Initiative_Delivery" EntityType="Self.Data_Initiative_Delivery" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Data_Initiative_Delivery_Line" EntityType="Self.Data_Initiative_Delivery_Line" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ref_Branch_APD" EntityType="Self.Ref_Branch_APD" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ref_Branch_Assignment" EntityType="Self.Ref_Branch_Assignment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ref_Branch_Delivery_Status" EntityType="Self.Ref_Branch_Delivery_Status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ref_Implem_Issue" EntityType="Self.Ref_Implem_Issue" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ref_Implem_Status" EntityType="Self.Ref_Implem_Status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ref_TPA_Calendar" EntityType="Self.Ref_TPA_Calendar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ref_TPA_Delivery_Status" EntityType="Self.Ref_TPA_Delivery_Status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ref_User" EntityType="Self.Ref_User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ref_User_Profile" EntityType="Self.Ref_User_Profile" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Data_Initiative_Branch_Line_Data_Initiative_Branch_File" Association="Self.FK_Data_Initiative_Branch_Line_Data_Initiative_Branch_File">
+            <End Role="Data_Initiative_Branch_File" EntitySet="Data_Initiative_Branch_File" />
+            <End Role="Data_Initiative_Branch_Line" EntitySet="Data_Initiative_Branch_Line" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Data_Initiative_Branch_Ref_Branch_APD" Association="Self.FK_Data_Initiative_Branch_Ref_Branch_APD">
+            <End Role="Ref_Branch_APD" EntitySet="Ref_Branch_APD" />
+            <End Role="Data_Initiative_Branch" EntitySet="Data_Initiative_Branch" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Data_Initiative_Delivery_Line_Data_Initiative_Delivery" Association="Self.FK_Data_Initiative_Delivery_Line_Data_Initiative_Delivery">
+            <End Role="Data_Initiative_Delivery" EntitySet="Data_Initiative_Delivery" />
+            <End Role="Data_Initiative_Delivery_Line" EntitySet="Data_Initiative_Delivery_Line" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ref_Branch_Assignment_Ref_Branch_APD" Association="Self.FK_Ref_Branch_Assignment_Ref_Branch_APD">
+            <End Role="Ref_Branch_APD" EntitySet="Ref_Branch_APD" />
+            <End Role="Ref_Branch_Assignment" EntitySet="Ref_Branch_Assignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ref_Branch_Assignment_Ref_User" Association="Self.FK_Ref_Branch_Assignment_Ref_User">
+            <End Role="Ref_User" EntitySet="Ref_User" />
+            <End Role="Ref_Branch_Assignment" EntitySet="Ref_Branch_Assignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ref_Implem_Issue_Ref_Implem_Status" Association="Self.FK_Ref_Implem_Issue_Ref_Implem_Status">
+            <End Role="Ref_Implem_Status" EntitySet="Ref_Implem_Status" />
+            <End Role="Ref_Implem_Issue" EntitySet="Ref_Implem_Issue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ref_User_Profile_Ref_User" Association="Self.FK_Ref_User_Profile_Ref_User">
+            <End Role="Ref_User" EntitySet="Ref_User" />
+            <End Role="Ref_User_Profile" EntitySet="Ref_User_Profile" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TPA_Implem2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Data_Initiative">
+          <Key>
+            <PropertyRef Name="initiative_id" />
+          </Key>
+          <Property Name="initiative_id" Type="Int32" Nullable="false" />
+          <Property Name="tpb_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="month" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="year" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="channel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="agency" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="initiative_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="initiative_sub_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="division" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="brand" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="initiative_title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="materials" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="start_date" Type="DateTime" Precision="0" />
+          <Property Name="end_date" Type="DateTime" Precision="0" />
+          <Property Name="account" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sell_in_date" Type="DateTime" Precision="0" />
+          <Property Name="account_allocation" Type="Int32" />
+          <Property Name="created_at" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modified_at" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="deleted_at" Type="DateTime" Precision="3" />
+          <Property Name="deleted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Data_Initiative_Branch">
+          <Key>
+            <PropertyRef Name="initiative_branch_id" />
+          </Key>
+          <Property Name="initiative_branch_id" Type="Int32" Nullable="false" />
+          <Property Name="tpb_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="materials" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="account" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="branch_apd_id" Type="Int32" />
+          <Property Name="branch_delivery_status_id" Type="Int32" />
+          <Property Name="branch_delivery_date" Type="DateTime" Precision="0" />
+          <Property Name="branch_delivery_status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="branch_allocation" Type="Int32" />
+          <Property Name="total_bundled" Type="Int32" />
+          <Property Name="percent_bundled" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="start_of_implem" Type="DateTime" Precision="0" />
+          <Property Name="implem_status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="implem_status_id" Type="Int32" />
+          <Property Name="implem_issue" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="implem_issue_id" Type="Int32" />
+          <Property Name="date_of_completion" Type="DateTime" Precision="0" />
+          <Property Name="total_offtake" Type="Int32" />
+          <Property Name="percent_offtake" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ending_inventory" Type="Int32" />
+          <Property Name="offtake_analysis" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created_at" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modified_at" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="deleted_at" Type="DateTime" Precision="3" />
+          <Property Name="deleted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Ref_Branch_APD" Relationship="Self.FK_Data_Initiative_Branch_Ref_Branch_APD" FromRole="Data_Initiative_Branch" ToRole="Ref_Branch_APD" />
+        </EntityType>
+        <EntityType Name="Data_Initiative_Branch_File">
+          <Key>
+            <PropertyRef Name="initiative_branch_file_id" />
+          </Key>
+          <Property Name="initiative_branch_file_id" Type="Int32" Nullable="false" />
+          <Property Name="file_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="file_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="file_category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="remarks" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="uploaded_at" Type="DateTime" Precision="3" />
+          <Property Name="uploaded_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modified_at" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="deleted_at" Type="DateTime" Precision="3" />
+          <Property Name="deleted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="initiative_branch_line_id" Type="Int32" />
+          <NavigationProperty Name="Data_Initiative_Branch_Line" Relationship="Self.FK_Data_Initiative_Branch_Line_Data_Initiative_Branch_File" FromRole="Data_Initiative_Branch_File" ToRole="Data_Initiative_Branch_Line" />
+        </EntityType>
+        <EntityType Name="Data_Initiative_Branch_Line">
+          <Key>
+            <PropertyRef Name="initiative_branch_line_id" />
+          </Key>
+          <Property Name="initiative_branch_line_id" Type="Int32" Nullable="false" />
+          <Property Name="week_no" Type="Int32" />
+          <Property Name="month_no" Type="Int32" />
+          <Property Name="branch_delivered_qty" Type="Int32" />
+          <Property Name="actual_bundled" Type="Int32" />
+          <Property Name="implem_issue" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="implem_issue_id" Type="Int32" />
+          <Property Name="actual_offtake" Type="Int32" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="is_approved" Type="Boolean" />
+          <Property Name="approved_at" Type="DateTime" Precision="3" />
+          <Property Name="approved_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created_at" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modified_at" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="deleted_at" Type="DateTime" Precision="3" />
+          <Property Name="deleted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="source" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Data_Initiative_Branch_File" Relationship="Self.FK_Data_Initiative_Branch_Line_Data_Initiative_Branch_File" FromRole="Data_Initiative_Branch_Line" ToRole="Data_Initiative_Branch_File" />
+        </EntityType>
+        <EntityType Name="Data_Initiative_Delivery">
+          <Key>
+            <PropertyRef Name="initiative_delivery_id" />
+          </Key>
+          <Property Name="initiative_delivery_id" Type="Int32" Nullable="false" />
+          <Property Name="tpb_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="materials" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="account" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="approval_date" Type="DateTime" Precision="0" />
+          <Property Name="tpa_delivery_date" Type="DateTime" Precision="0" />
+          <Property Name="tpa_delivery_status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="tpa_delivery_status_id" Type="Int32" />
+          <Property Name="remarks" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created_at" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modified_at" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="deleted_at" Type="DateTime" Precision="3" />
+          <Property Name="deleted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Data_Initiative_Delivery_Line" Relationship="Self.FK_Data_Initiative_Delivery_Line_Data_Initiative_Delivery" FromRole="Data_Initiative_Delivery" ToRole="Data_Initiative_Delivery_Line" />
+        </EntityType>
+        <EntityType Name="Data_Initiative_Delivery_Line">
+          <Key>
+            <PropertyRef Name="initiative_delivery_line_id" />
+          </Key>
+          <Property Name="initiative_delivery_line_id" Type="Int32" Nullable="false" />
+          <Property Name="initiative_delivery_id" Type="Int32" />
+          <Property Name="tpa_delivered_qty" Type="Int32" />
+          <Property Name="remarks" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created_at" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modified_at" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="deleted_at" Type="DateTime" Precision="3" />
+          <Property Name="deleted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Data_Initiative_Delivery" Relationship="Self.FK_Data_Initiative_Delivery_Line_Data_Initiative_Delivery" FromRole="Data_Initiative_Delivery_Line" ToRole="Data_Initiative_Delivery" />
+        </EntityType>
+        <EntityType Name="Ref_Branch_APD">
+          <Key>
+            <PropertyRef Name="branch_apd_id" />
+          </Key>
+          <Property Name="branch_apd_id" Type="Int32" Nullable="false" />
+          <Property Name="agency" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="channel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="area" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cds" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="distributor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="account" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="branch_name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="branch_code" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="sfa_id" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="province" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="city" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="classification" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="team_lead" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created_at" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modified_at" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="deleted_at" Type="DateTime" Precision="3" />
+          <Property Name="deleted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Data_Initiative_Branch" Relationship="Self.FK_Data_Initiative_Branch_Ref_Branch_APD" FromRole="Ref_Branch_APD" ToRole="Data_Initiative_Branch" />
+          <NavigationProperty Name="Ref_Branch_Assignment" Relationship="Self.FK_Ref_Branch_Assignment_Ref_Branch_APD" FromRole="Ref_Branch_APD" ToRole="Ref_Branch_Assignment" />
+        </EntityType>
+        <EntityType Name="Ref_Branch_Assignment">
+          <Key>
+            <PropertyRef Name="branch_assignment_id" />
+          </Key>
+          <Property Name="branch_assignment_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="branch_apd_id" Type="Int32" />
+          <Property Name="user_id" Type="Int32" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created_at" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modified_at" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="deleted_at" Type="DateTime" Precision="3" />
+          <Property Name="deleted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Ref_Branch_APD" Relationship="Self.FK_Ref_Branch_Assignment_Ref_Branch_APD" FromRole="Ref_Branch_Assignment" ToRole="Ref_Branch_APD" />
+          <NavigationProperty Name="Ref_User" Relationship="Self.FK_Ref_Branch_Assignment_Ref_User" FromRole="Ref_Branch_Assignment" ToRole="Ref_User" />
+        </EntityType>
+        <EntityType Name="Ref_Branch_Delivery_Status">
+          <Key>
+            <PropertyRef Name="branch_delivery_status_id" />
+          </Key>
+          <Property Name="branch_delivery_status_id" Type="Int32" Nullable="false" />
+          <Property Name="branch_delivery_status_value" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created_at" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modified_at" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="deleted_at" Type="DateTime" Precision="3" />
+          <Property Name="deleted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Ref_Implem_Issue">
+          <Key>
+            <PropertyRef Name="implem_issue_id" />
+          </Key>
+          <Property Name="implem_issue_id" Type="Int32" Nullable="false" />
+          <Property Name="implem_status_id" Type="Int32" />
+          <Property Name="category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="issue" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created_at" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modified_at" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="deleted_at" Type="DateTime" Precision="3" />
+          <Property Name="deleted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Ref_Implem_Status" Relationship="Self.FK_Ref_Implem_Issue_Ref_Implem_Status" FromRole="Ref_Implem_Issue" ToRole="Ref_Implem_Status" />
+        </EntityType>
+        <EntityType Name="Ref_Implem_Status">
+          <Key>
+            <PropertyRef Name="implem_status_id" />
+          </Key>
+          <Property Name="implem_status_id" Type="Int32" Nullable="false" />
+          <Property Name="implem_status_val" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created_at" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modified_at" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="deleted_at" Type="DateTime" Precision="3" />
+          <Property Name="deleted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Ref_Implem_Issue" Relationship="Self.FK_Ref_Implem_Issue_Ref_Implem_Status" FromRole="Ref_Implem_Status" ToRole="Ref_Implem_Issue" />
+        </EntityType>
+        <EntityType Name="Ref_TPA_Calendar">
+          <Key>
+            <PropertyRef Name="tpa_calendar_id" />
+          </Key>
+          <Property Name="tpa_calendar_id" Type="Int32" Nullable="false" />
+          <Property Name="year_period" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="month_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="month_alias" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="month_number" Type="Int32" />
+          <Property Name="week_number" Type="Int32" />
+          <Property Name="week_start" Type="DateTime" Precision="0" />
+          <Property Name="week_end" Type="DateTime" Precision="0" />
+          <Property Name="cutoff_date" Type="DateTime" Precision="0" />
+          <Property Name="created_at" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modified_at" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="deleted_at" Type="DateTime" Precision="3" />
+          <Property Name="deleted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Ref_TPA_Delivery_Status">
+          <Key>
+            <PropertyRef Name="tpa_delivery_status_id" />
+          </Key>
+          <Property Name="tpa_delivery_status_id" Type="Int32" Nullable="false" />
+          <Property Name="tpa_delivery_status_value" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created_at" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modified_at" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="deleted_at" Type="DateTime" Precision="3" />
+          <Property Name="deleted_by" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Ref_User">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="hash" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="salt" Type="Binary" MaxLength="50" FixedLength="false" />
+          <NavigationProperty Name="Ref_Branch_Assignment" Relationship="Self.FK_Ref_Branch_Assignment_Ref_User" FromRole="Ref_User" ToRole="Ref_Branch_Assignment" />
+          <NavigationProperty Name="Ref_User_Profile" Relationship="Self.FK_Ref_User_Profile_Ref_User" FromRole="Ref_User" ToRole="Ref_User_Profile" />
+        </EntityType>
+        <EntityType Name="Ref_User_Profile">
+          <Key>
+            <PropertyRef Name="user_profile_id" />
+          </Key>
+          <Property Name="user_profile_id" Type="Int32" Nullable="false" />
+          <Property Name="firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="position" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="contact" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="user_id" Type="Int32" />
+          <Property Name="created_at" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modified_at" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="deleted_at" Type="DateTime" Precision="3" />
+          <Property Name="deleted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Ref_User" Relationship="Self.FK_Ref_User_Profile_Ref_User" FromRole="Ref_User_Profile" ToRole="Ref_User" />
+        </EntityType>
+        <Association Name="FK_Data_Initiative_Branch_Ref_Branch_APD">
+          <End Role="Ref_Branch_APD" Type="Self.Ref_Branch_APD" Multiplicity="0..1" />
+          <End Role="Data_Initiative_Branch" Type="Self.Data_Initiative_Branch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ref_Branch_APD">
+              <PropertyRef Name="branch_apd_id" />
+            </Principal>
+            <Dependent Role="Data_Initiative_Branch">
+              <PropertyRef Name="branch_apd_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Data_Initiative_Branch_Line_Data_Initiative_Branch_File">
+          <End Role="Data_Initiative_Branch_File" Type="Self.Data_Initiative_Branch_File" Multiplicity="1" />
+          <End Role="Data_Initiative_Branch_Line" Type="Self.Data_Initiative_Branch_Line" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Data_Initiative_Branch_File">
+              <PropertyRef Name="initiative_branch_file_id" />
+            </Principal>
+            <Dependent Role="Data_Initiative_Branch_Line">
+              <PropertyRef Name="initiative_branch_line_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Data_Initiative_Delivery_Line_Data_Initiative_Delivery">
+          <End Role="Data_Initiative_Delivery" Type="Self.Data_Initiative_Delivery" Multiplicity="0..1" />
+          <End Role="Data_Initiative_Delivery_Line" Type="Self.Data_Initiative_Delivery_Line" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Data_Initiative_Delivery">
+              <PropertyRef Name="initiative_delivery_id" />
+            </Principal>
+            <Dependent Role="Data_Initiative_Delivery_Line">
+              <PropertyRef Name="initiative_delivery_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ref_Branch_Assignment_Ref_Branch_APD">
+          <End Role="Ref_Branch_APD" Type="Self.Ref_Branch_APD" Multiplicity="0..1" />
+          <End Role="Ref_Branch_Assignment" Type="Self.Ref_Branch_Assignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ref_Branch_APD">
+              <PropertyRef Name="branch_apd_id" />
+            </Principal>
+            <Dependent Role="Ref_Branch_Assignment">
+              <PropertyRef Name="branch_apd_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ref_Branch_Assignment_Ref_User">
+          <End Role="Ref_User" Type="Self.Ref_User" Multiplicity="0..1" />
+          <End Role="Ref_Branch_Assignment" Type="Self.Ref_Branch_Assignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ref_User">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="Ref_Branch_Assignment">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ref_Implem_Issue_Ref_Implem_Status">
+          <End Role="Ref_Implem_Status" Type="Self.Ref_Implem_Status" Multiplicity="0..1" />
+          <End Role="Ref_Implem_Issue" Type="Self.Ref_Implem_Issue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ref_Implem_Status">
+              <PropertyRef Name="implem_status_id" />
+            </Principal>
+            <Dependent Role="Ref_Implem_Issue">
+              <PropertyRef Name="implem_status_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ref_User_Profile_Ref_User">
+          <End Role="Ref_User" Type="Self.Ref_User" Multiplicity="0..1" />
+          <End Role="Ref_User_Profile" Type="Self.Ref_User_Profile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ref_User">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="Ref_User_Profile">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Data_Initiative" EntityType="Self.Data_Initiative" />
+          <EntitySet Name="Data_Initiative_Branch" EntityType="Self.Data_Initiative_Branch" />
+          <EntitySet Name="Data_Initiative_Branch_File" EntityType="Self.Data_Initiative_Branch_File" />
+          <EntitySet Name="Data_Initiative_Branch_Line" EntityType="Self.Data_Initiative_Branch_Line" />
+          <EntitySet Name="Data_Initiative_Delivery" EntityType="Self.Data_Initiative_Delivery" />
+          <EntitySet Name="Data_Initiative_Delivery_Line" EntityType="Self.Data_Initiative_Delivery_Line" />
+          <EntitySet Name="Ref_Branch_APD" EntityType="Self.Ref_Branch_APD" />
+          <EntitySet Name="Ref_Branch_Assignment" EntityType="Self.Ref_Branch_Assignment" />
+          <EntitySet Name="Ref_Branch_Delivery_Status" EntityType="Self.Ref_Branch_Delivery_Status" />
+          <EntitySet Name="Ref_Implem_Issue" EntityType="Self.Ref_Implem_Issue" />
+          <EntitySet Name="Ref_Implem_Status" EntityType="Self.Ref_Implem_Status" />
+          <EntitySet Name="Ref_TPA_Calendar" EntityType="Self.Ref_TPA_Calendar" />
+          <EntitySet Name="Ref_TPA_Delivery_Status" EntityType="Self.Ref_TPA_Delivery_Status" />
+          <EntitySet Name="Ref_User" EntityType="Self.Ref_User" />
+          <EntitySet Name="Ref_User_Profile" EntityType="Self.Ref_User_Profile" />
+          <AssociationSet Name="FK_Data_Initiative_Branch_Ref_Branch_APD" Association="Self.FK_Data_Initiative_Branch_Ref_Branch_APD">
+            <End Role="Ref_Branch_APD" EntitySet="Ref_Branch_APD" />
+            <End Role="Data_Initiative_Branch" EntitySet="Data_Initiative_Branch" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Data_Initiative_Branch_Line_Data_Initiative_Branch_File" Association="Self.FK_Data_Initiative_Branch_Line_Data_Initiative_Branch_File">
+            <End Role="Data_Initiative_Branch_File" EntitySet="Data_Initiative_Branch_File" />
+            <End Role="Data_Initiative_Branch_Line" EntitySet="Data_Initiative_Branch_Line" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Data_Initiative_Delivery_Line_Data_Initiative_Delivery" Association="Self.FK_Data_Initiative_Delivery_Line_Data_Initiative_Delivery">
+            <End Role="Data_Initiative_Delivery" EntitySet="Data_Initiative_Delivery" />
+            <End Role="Data_Initiative_Delivery_Line" EntitySet="Data_Initiative_Delivery_Line" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ref_Branch_Assignment_Ref_Branch_APD" Association="Self.FK_Ref_Branch_Assignment_Ref_Branch_APD">
+            <End Role="Ref_Branch_APD" EntitySet="Ref_Branch_APD" />
+            <End Role="Ref_Branch_Assignment" EntitySet="Ref_Branch_Assignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ref_Branch_Assignment_Ref_User" Association="Self.FK_Ref_Branch_Assignment_Ref_User">
+            <End Role="Ref_User" EntitySet="Ref_User" />
+            <End Role="Ref_Branch_Assignment" EntitySet="Ref_Branch_Assignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ref_Implem_Issue_Ref_Implem_Status" Association="Self.FK_Ref_Implem_Issue_Ref_Implem_Status">
+            <End Role="Ref_Implem_Status" EntitySet="Ref_Implem_Status" />
+            <End Role="Ref_Implem_Issue" EntitySet="Ref_Implem_Issue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ref_User_Profile_Ref_User" Association="Self.FK_Ref_User_Profile_Ref_User">
+            <End Role="Ref_User" EntitySet="Ref_User" />
+            <End Role="Ref_User_Profile" EntitySet="Ref_User_Profile" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TPA_Implem2ModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Data_Initiative">
+            <EntityTypeMapping TypeName="TPA_Implem2Model.Data_Initiative">
+              <MappingFragment StoreEntitySet="Data_Initiative">
+                <ScalarProperty Name="initiative_id" ColumnName="initiative_id" />
+                <ScalarProperty Name="tpb_id" ColumnName="tpb_id" />
+                <ScalarProperty Name="month" ColumnName="month" />
+                <ScalarProperty Name="year" ColumnName="year" />
+                <ScalarProperty Name="channel" ColumnName="channel" />
+                <ScalarProperty Name="agency" ColumnName="agency" />
+                <ScalarProperty Name="initiative_type" ColumnName="initiative_type" />
+                <ScalarProperty Name="initiative_sub_type" ColumnName="initiative_sub_type" />
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="division" ColumnName="division" />
+                <ScalarProperty Name="brand" ColumnName="brand" />
+                <ScalarProperty Name="initiative_title" ColumnName="initiative_title" />
+                <ScalarProperty Name="materials" ColumnName="materials" />
+                <ScalarProperty Name="start_date" ColumnName="start_date" />
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+                <ScalarProperty Name="account" ColumnName="account" />
+                <ScalarProperty Name="sell_in_date" ColumnName="sell_in_date" />
+                <ScalarProperty Name="account_allocation" ColumnName="account_allocation" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="modified_at" ColumnName="modified_at" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+                <ScalarProperty Name="deleted_by" ColumnName="deleted_by" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Data_Initiative_Branch">
+            <EntityTypeMapping TypeName="TPA_Implem2Model.Data_Initiative_Branch">
+              <MappingFragment StoreEntitySet="Data_Initiative_Branch">
+                <ScalarProperty Name="initiative_branch_id" ColumnName="initiative_branch_id" />
+                <ScalarProperty Name="tpb_id" ColumnName="tpb_id" />
+                <ScalarProperty Name="materials" ColumnName="materials" />
+                <ScalarProperty Name="account" ColumnName="account" />
+                <ScalarProperty Name="branch_apd_id" ColumnName="branch_apd_id" />
+                <ScalarProperty Name="branch_delivery_status_id" ColumnName="branch_delivery_status_id" />
+                <ScalarProperty Name="branch_delivery_date" ColumnName="branch_delivery_date" />
+                <ScalarProperty Name="branch_delivery_status" ColumnName="branch_delivery_status" />
+                <ScalarProperty Name="branch_allocation" ColumnName="branch_allocation" />
+                <ScalarProperty Name="total_bundled" ColumnName="total_bundled" />
+                <ScalarProperty Name="percent_bundled" ColumnName="percent_bundled" />
+                <ScalarProperty Name="start_of_implem" ColumnName="start_of_implem" />
+                <ScalarProperty Name="implem_status" ColumnName="implem_status" />
+                <ScalarProperty Name="implem_status_id" ColumnName="implem_status_id" />
+                <ScalarProperty Name="implem_issue" ColumnName="implem_issue" />
+                <ScalarProperty Name="implem_issue_id" ColumnName="implem_issue_id" />
+                <ScalarProperty Name="date_of_completion" ColumnName="date_of_completion" />
+                <ScalarProperty Name="total_offtake" ColumnName="total_offtake" />
+                <ScalarProperty Name="percent_offtake" ColumnName="percent_offtake" />
+                <ScalarProperty Name="ending_inventory" ColumnName="ending_inventory" />
+                <ScalarProperty Name="offtake_analysis" ColumnName="offtake_analysis" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="modified_at" ColumnName="modified_at" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+                <ScalarProperty Name="deleted_by" ColumnName="deleted_by" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Data_Initiative_Branch_File">
+            <EntityTypeMapping TypeName="TPA_Implem2Model.Data_Initiative_Branch_File">
+              <MappingFragment StoreEntitySet="Data_Initiative_Branch_File">
+                <ScalarProperty Name="initiative_branch_file_id" ColumnName="initiative_branch_file_id" />
+                <ScalarProperty Name="file_name" ColumnName="file_name" />
+                <ScalarProperty Name="file_type" ColumnName="file_type" />
+                <ScalarProperty Name="file_category" ColumnName="file_category" />
+                <ScalarProperty Name="remarks" ColumnName="remarks" />
+                <ScalarProperty Name="uploaded_at" ColumnName="uploaded_at" />
+                <ScalarProperty Name="uploaded_by" ColumnName="uploaded_by" />
+                <ScalarProperty Name="modified_at" ColumnName="modified_at" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+                <ScalarProperty Name="deleted_by" ColumnName="deleted_by" />
+                <ScalarProperty Name="initiative_branch_line_id" ColumnName="initiative_branch_line_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Data_Initiative_Branch_Line">
+            <EntityTypeMapping TypeName="TPA_Implem2Model.Data_Initiative_Branch_Line">
+              <MappingFragment StoreEntitySet="Data_Initiative_Branch_Line">
+                <ScalarProperty Name="initiative_branch_line_id" ColumnName="initiative_branch_line_id" />
+                <ScalarProperty Name="week_no" ColumnName="week_no" />
+                <ScalarProperty Name="month_no" ColumnName="month_no" />
+                <ScalarProperty Name="branch_delivered_qty" ColumnName="branch_delivered_qty" />
+                <ScalarProperty Name="actual_bundled" ColumnName="actual_bundled" />
+                <ScalarProperty Name="implem_issue" ColumnName="implem_issue" />
+                <ScalarProperty Name="implem_issue_id" ColumnName="implem_issue_id" />
+                <ScalarProperty Name="actual_offtake" ColumnName="actual_offtake" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="is_approved" ColumnName="is_approved" />
+                <ScalarProperty Name="approved_at" ColumnName="approved_at" />
+                <ScalarProperty Name="approved_by" ColumnName="approved_by" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="modified_at" ColumnName="modified_at" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+                <ScalarProperty Name="deleted_by" ColumnName="deleted_by" />
+                <ScalarProperty Name="source" ColumnName="source" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Data_Initiative_Delivery">
+            <EntityTypeMapping TypeName="TPA_Implem2Model.Data_Initiative_Delivery">
+              <MappingFragment StoreEntitySet="Data_Initiative_Delivery">
+                <ScalarProperty Name="initiative_delivery_id" ColumnName="initiative_delivery_id" />
+                <ScalarProperty Name="tpb_id" ColumnName="tpb_id" />
+                <ScalarProperty Name="materials" ColumnName="materials" />
+                <ScalarProperty Name="account" ColumnName="account" />
+                <ScalarProperty Name="approval_date" ColumnName="approval_date" />
+                <ScalarProperty Name="tpa_delivery_date" ColumnName="tpa_delivery_date" />
+                <ScalarProperty Name="tpa_delivery_status" ColumnName="tpa_delivery_status" />
+                <ScalarProperty Name="tpa_delivery_status_id" ColumnName="tpa_delivery_status_id" />
+                <ScalarProperty Name="remarks" ColumnName="remarks" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="modified_at" ColumnName="modified_at" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+                <ScalarProperty Name="deleted_by" ColumnName="deleted_by" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Data_Initiative_Delivery_Line">
+            <EntityTypeMapping TypeName="TPA_Implem2Model.Data_Initiative_Delivery_Line">
+              <MappingFragment StoreEntitySet="Data_Initiative_Delivery_Line">
+                <ScalarProperty Name="initiative_delivery_line_id" ColumnName="initiative_delivery_line_id" />
+                <ScalarProperty Name="initiative_delivery_id" ColumnName="initiative_delivery_id" />
+                <ScalarProperty Name="tpa_delivered_qty" ColumnName="tpa_delivered_qty" />
+                <ScalarProperty Name="remarks" ColumnName="remarks" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="modified_at" ColumnName="modified_at" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+                <ScalarProperty Name="deleted_by" ColumnName="deleted_by" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ref_Branch_APD">
+            <EntityTypeMapping TypeName="TPA_Implem2Model.Ref_Branch_APD">
+              <MappingFragment StoreEntitySet="Ref_Branch_APD">
+                <ScalarProperty Name="branch_apd_id" ColumnName="branch_apd_id" />
+                <ScalarProperty Name="agency" ColumnName="agency" />
+                <ScalarProperty Name="channel" ColumnName="channel" />
+                <ScalarProperty Name="area" ColumnName="area" />
+                <ScalarProperty Name="cds" ColumnName="cds" />
+                <ScalarProperty Name="distributor" ColumnName="distributor" />
+                <ScalarProperty Name="account" ColumnName="account" />
+                <ScalarProperty Name="branch_name" ColumnName="branch_name" />
+                <ScalarProperty Name="branch_code" ColumnName="branch_code" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="sfa_id" ColumnName="sfa_id" />
+                <ScalarProperty Name="province" ColumnName="province" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="classification" ColumnName="classification" />
+                <ScalarProperty Name="team_lead" ColumnName="team_lead" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="modified_at" ColumnName="modified_at" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+                <ScalarProperty Name="deleted_by" ColumnName="deleted_by" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ref_Branch_Assignment">
+            <EntityTypeMapping TypeName="TPA_Implem2Model.Ref_Branch_Assignment">
+              <MappingFragment StoreEntitySet="Ref_Branch_Assignment">
+                <ScalarProperty Name="branch_assignment_id" ColumnName="branch_assignment_id" />
+                <ScalarProperty Name="branch_apd_id" ColumnName="branch_apd_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="modified_at" ColumnName="modified_at" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+                <ScalarProperty Name="deleted_by" ColumnName="deleted_by" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ref_Branch_Delivery_Status">
+            <EntityTypeMapping TypeName="TPA_Implem2Model.Ref_Branch_Delivery_Status">
+              <MappingFragment StoreEntitySet="Ref_Branch_Delivery_Status">
+                <ScalarProperty Name="branch_delivery_status_id" ColumnName="branch_delivery_status_id" />
+                <ScalarProperty Name="branch_delivery_status_value" ColumnName="branch_delivery_status_value" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="modified_at" ColumnName="modified_at" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+                <ScalarProperty Name="deleted_by" ColumnName="deleted_by" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ref_Implem_Issue">
+            <EntityTypeMapping TypeName="TPA_Implem2Model.Ref_Implem_Issue">
+              <MappingFragment StoreEntitySet="Ref_Implem_Issue">
+                <ScalarProperty Name="implem_issue_id" ColumnName="implem_issue_id" />
+                <ScalarProperty Name="implem_status_id" ColumnName="implem_status_id" />
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="issue" ColumnName="issue" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="modified_at" ColumnName="modified_at" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+                <ScalarProperty Name="deleted_by" ColumnName="deleted_by" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ref_Implem_Status">
+            <EntityTypeMapping TypeName="TPA_Implem2Model.Ref_Implem_Status">
+              <MappingFragment StoreEntitySet="Ref_Implem_Status">
+                <ScalarProperty Name="implem_status_id" ColumnName="implem_status_id" />
+                <ScalarProperty Name="implem_status_val" ColumnName="implem_status_val" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="modified_at" ColumnName="modified_at" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+                <ScalarProperty Name="deleted_by" ColumnName="deleted_by" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ref_TPA_Calendar">
+            <EntityTypeMapping TypeName="TPA_Implem2Model.Ref_TPA_Calendar">
+              <MappingFragment StoreEntitySet="Ref_TPA_Calendar">
+                <ScalarProperty Name="tpa_calendar_id" ColumnName="tpa_calendar_id" />
+                <ScalarProperty Name="year_period" ColumnName="year_period" />
+                <ScalarProperty Name="month_name" ColumnName="month_name" />
+                <ScalarProperty Name="month_alias" ColumnName="month_alias" />
+                <ScalarProperty Name="month_number" ColumnName="month_number" />
+                <ScalarProperty Name="week_number" ColumnName="week_number" />
+                <ScalarProperty Name="week_start" ColumnName="week_start" />
+                <ScalarProperty Name="week_end" ColumnName="week_end" />
+                <ScalarProperty Name="cutoff_date" ColumnName="cutoff_date" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="modified_at" ColumnName="modified_at" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+                <ScalarProperty Name="deleted_by" ColumnName="deleted_by" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ref_TPA_Delivery_Status">
+            <EntityTypeMapping TypeName="TPA_Implem2Model.Ref_TPA_Delivery_Status">
+              <MappingFragment StoreEntitySet="Ref_TPA_Delivery_Status">
+                <ScalarProperty Name="tpa_delivery_status_id" ColumnName="tpa_delivery_status_id" />
+                <ScalarProperty Name="tpa_delivery_status_value" ColumnName="tpa_delivery_status_value" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="modified_at" ColumnName="modified_at" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+                <ScalarProperty Name="deleted_by" ColumnName="deleted_by" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ref_User">
+            <EntityTypeMapping TypeName="TPA_Implem2Model.Ref_User">
+              <MappingFragment StoreEntitySet="Ref_User">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="hash" ColumnName="hash" />
+                <ScalarProperty Name="salt" ColumnName="salt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ref_User_Profile">
+            <EntityTypeMapping TypeName="TPA_Implem2Model.Ref_User_Profile">
+              <MappingFragment StoreEntitySet="Ref_User_Profile">
+                <ScalarProperty Name="user_profile_id" ColumnName="user_profile_id" />
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="lastname" ColumnName="lastname" />
+                <ScalarProperty Name="position" ColumnName="position" />
+                <ScalarProperty Name="contact" ColumnName="contact" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="modified_at" ColumnName="modified_at" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+                <ScalarProperty Name="deleted_by" ColumnName="deleted_by" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

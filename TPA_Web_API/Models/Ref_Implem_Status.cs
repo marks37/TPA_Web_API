@@ -17,21 +17,18 @@ namespace TPA_Web_API.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Ref_Implem_Status()
         {
-            this.Data_Branch_Allocation = new HashSet<Data_Branch_Allocation>();
             this.Ref_Implem_Issue = new HashSet<Ref_Implem_Issue>();
         }
     
         public int implem_status_id { get; set; }
-        public string implem_status { get; set; }
+        public string implem_status_val { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public string created_by { get; set; }
-        public Nullable<System.DateTime> deleted_at { get; set; }
-        public string deleted_by { get; set; }
         public Nullable<System.DateTime> modified_at { get; set; }
         public string modified_by { get; set; }
+        public Nullable<System.DateTime> deleted_at { get; set; }
+        public string deleted_by { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Data_Branch_Allocation> Data_Branch_Allocation { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Ref_Implem_Issue> Ref_Implem_Issue { get; set; }
     }

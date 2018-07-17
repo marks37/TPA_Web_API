@@ -11,7 +11,6 @@ namespace TPA_Web_API.Controllers
     public class AccountsController : ApiController
     {
         private DBLayer dblayer = new DBLayer();
-        private TPA_ImplemEntities db = new TPA_ImplemEntities();
 
         [Route("api/users/{userID}/accounts")]
         [HttpGet]

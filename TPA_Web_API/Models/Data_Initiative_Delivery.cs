@@ -12,31 +12,31 @@ namespace TPA_Web_API.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Data_Initiative
+    public partial class Data_Initiative_Delivery
     {
-        public int initiative_id { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Data_Initiative_Delivery()
+        {
+            this.Data_Initiative_Delivery_Line = new HashSet<Data_Initiative_Delivery_Line>();
+        }
+    
+        public int initiative_delivery_id { get; set; }
         public string tpb_id { get; set; }
-        public string month { get; set; }
-        public string year { get; set; }
-        public string channel { get; set; }
-        public string agency { get; set; }
-        public string initiative_type { get; set; }
-        public string initiative_sub_type { get; set; }
-        public string category { get; set; }
-        public string division { get; set; }
-        public string brand { get; set; }
-        public string initiative_title { get; set; }
         public string materials { get; set; }
-        public Nullable<System.DateTime> start_date { get; set; }
-        public Nullable<System.DateTime> end_date { get; set; }
         public string account { get; set; }
-        public Nullable<System.DateTime> sell_in_date { get; set; }
-        public Nullable<int> account_allocation { get; set; }
+        public Nullable<System.DateTime> approval_date { get; set; }
+        public Nullable<System.DateTime> tpa_delivery_date { get; set; }
+        public string tpa_delivery_status { get; set; }
+        public Nullable<int> tpa_delivery_status_id { get; set; }
+        public string remarks { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public string created_by { get; set; }
         public Nullable<System.DateTime> modified_at { get; set; }
         public string modified_by { get; set; }
         public Nullable<System.DateTime> deleted_at { get; set; }
         public string deleted_by { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Data_Initiative_Delivery_Line> Data_Initiative_Delivery_Line { get; set; }
     }
 }

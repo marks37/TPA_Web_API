@@ -14,13 +14,19 @@ namespace TPA_Web_API.Models
     
     public partial class Ref_User_Profile
     {
-        public int id { get; set; }
+        public int user_profile_id { get; set; }
         public string firstname { get; set; }
         public string lastname { get; set; }
         public string position { get; set; }
         public string contact { get; set; }
         public string address { get; set; }
-        public Nullable<int> User_ID { get; set; }
+        public Nullable<int> user_id { get; set; }
+        public Nullable<System.DateTime> created_at { get; set; }
+        public string created_by { get; set; }
+        public Nullable<System.DateTime> modified_at { get; set; }
+        public string modified_by { get; set; }
+        public Nullable<System.DateTime> deleted_at { get; set; }
+        public string deleted_by { get; set; }
     
         public virtual Ref_User Ref_User { get; set; }
     }

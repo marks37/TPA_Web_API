@@ -12,19 +12,28 @@ namespace TPA_Web_API.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Data_Installation_Issue
+    public partial class Data_Initiative_Branch_Line
     {
-        public int installation_issue_id { get; set; }
-        public Nullable<int> branch_allocation_id { get; set; }
+        public int initiative_branch_line_id { get; set; }
+        public Nullable<int> week_no { get; set; }
+        public Nullable<int> month_no { get; set; }
+        public Nullable<int> branch_delivered_qty { get; set; }
+        public Nullable<int> actual_bundled { get; set; }
+        public string implem_issue { get; set; }
         public Nullable<int> implem_issue_id { get; set; }
-        public string issue { get; set; }
-        public string category { get; set; }
+        public Nullable<int> actual_offtake { get; set; }
+        public string status { get; set; }
+        public Nullable<bool> is_approved { get; set; }
+        public Nullable<System.DateTime> approved_at { get; set; }
+        public string approved_by { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public string created_by { get; set; }
         public Nullable<System.DateTime> modified_at { get; set; }
         public string modified_by { get; set; }
+        public Nullable<System.DateTime> deleted_at { get; set; }
+        public string deleted_by { get; set; }
         public string source { get; set; }
     
-        public virtual Data_Branch_Allocation Data_Branch_Allocation { get; set; }
+        public virtual Data_Initiative_Branch_File Data_Initiative_Branch_File { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace TPA_Web_API.Controllers
 {
     public class InitiativesController : ApiController
     {
-        private TPA_ImplemEntities db = new TPA_ImplemEntities();
+        //private TPA_Implem2Entities db = new TPA_Implem2Entities();
         private DBLayer dblayer = new DBLayer();
 
         //public IHttpActionResult GetInitiativeByBID(string id)

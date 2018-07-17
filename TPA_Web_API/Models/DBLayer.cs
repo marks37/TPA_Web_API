@@ -10,7 +10,7 @@ namespace TPA_Web_API.Models
 {
     public class DBLayer
     {
-        private TPA_ImplemEntities db = new TPA_ImplemEntities();
+        private Entities db = new Entities();
         private static int saltLengthLimit = 256;
 
         public UserProfile LoginUser(string username, string password)
@@ -22,13 +22,13 @@ namespace TPA_Web_API.Models
 
             try
             {
-                using (db = new TPA_ImplemEntities())
+                using (db = new Entities())
                 {
-                    var user = db.Ref_User.Where(s => s.Username == username.Trim()).FirstOrDefault();
+                    var user = db.Ref_User.Where(s => s.username == username.Trim()).FirstOrDefault();
                     if (user != null)
                     {
-                        OldHASHValue = user.HASH;
-                        SALT = user.SALT;
+                        OldHASHValue = user.hash;
+                        SALT = user.salt;
                     }
 
                     bool isLogin = CompareHashValue(password, username, OldHASHValue, SALT);
@@ -36,7 +36,7 @@ namespace TPA_Web_API.Models
                     if (isLogin)
                     {
                         userProfile = (from p in db.Ref_User_Profile
-                                       where p.User_ID == user.UserID
+                                       where p.user_id == user.user_id
                                        select new UserProfile
                                        {
                                         Address = p.address,
@@ -44,8 +44,8 @@ namespace TPA_Web_API.Models
                                         Firstname = p.firstname,
                                         Lastname = p.lastname,
                                         Position = p.position,
-                                        UserId = p.User_ID,
-                                        Username = user.Username
+                                        UserId = p.user_id,
+                                        Username = user.username
                                        }).FirstOrDefault();
                     }
                 }
@@ -138,11 +138,37 @@ namespace TPA_Web_API.Models
             }
         }
 
+        public List<Data_Initiative> GetDistinctData_Initiatives()
+        {
+            var initiatives = (from i in db.Data_Initiative
+                               group i by new { i.tpb_id, i.year, i.month, i.channel, i.agency, i.initiative_type, i.initiative_sub_type, i.category, i.division, i.brand, i.initiative_title, i.materials, i.start_date, i.end_date, i.account, i.sell_in_date, i.account_allocation } into grp
+                               select grp
+                               .OrderByDescending(p => p.created_at)
+                               .FirstOrDefault());
+            return initiatives.ToList();
+        }
+
+        //public List<Mobile_Material> GetMobile_Materials()
+        //{
+        //    var materials = (from ib in db.Data_Initiative_Branch
+        //                     select new Mobile_Material
+        //                     {
+        //                         BranchAllocation = ib.branch_allocation,
+        //                     }).ToList();
+        //    return materials;
+        //}
+
+        public List<Data_Initiative_Branch> GetData_Initiative_Branches()
+        {
+            var data_initiative_branches = (from ib in db.Data_Initiative_Branch
+                                            select ib).ToList();
+            return data_initiative_branches;
+        }
 
         public List<Ref_Branch_APD> GetAssignedBranchesWithInitiatives(int userID)
         {
-            var branchesWithInitiatives = (from dba in db.Data_Branch_Allocation
-                                           group dba by dba.branch_id into grp
+            var branchesWithInitiatives = (from dba in db.Data_Initiative_Branch
+                                           group dba by dba.branch_apd_id into grp
                                            select grp.Key).ToList();
 
             //var assignedBranches = (from ba in db.Ref_Branch_Assignment
@@ -157,7 +183,7 @@ namespace TPA_Web_API.Models
 
             var assignedBranches = (from b_apd in db.Ref_Branch_APD
                                     join ba in db.Ref_Branch_Assignment
-                                    on b_apd.branch_apd_id equals ba.branch_id
+                                    on b_apd.branch_apd_id equals ba.branch_apd_id
                                     where ba.user_id == userID
                                     select b_apd).ToList();
 
@@ -169,11 +195,11 @@ namespace TPA_Web_API.Models
             return filtered.ToList();
         }
 
-        public List<Data_Branch_Allocation> GetData_Branch_AllocationsByUserID(int userID)
+        public List<Data_Initiative_Branch> GetData_Branch_AllocationsByUserID(int userID)
         {
             var data_branch_allocation = (from ba in db.Ref_Branch_Assignment
-                                          join dba in db.Data_Branch_Allocation
-                                          on ba.branch_id equals dba.branch_id
+                                          join dba in db.Data_Initiative_Branch
+                                          on ba.branch_apd_id equals dba.branch_apd_id
                                           where ba.user_id == userID
                                           select dba);
             return data_branch_allocation.ToList();
@@ -198,10 +224,10 @@ namespace TPA_Web_API.Models
             return accountList.ToList();
         }
 
-        public List<Data_Branch_Allocation> GetData_Branch_Allocations(int branchID, string TPB_ID)
+        public List<Data_Initiative_Branch> GetData_Branch_Allocations(int branchID, string TPB_ID)
         {
-            var materials = (from ba in db.Data_Branch_Allocation
-                             where (ba.branch_id == branchID) && (ba.tpb_id == TPB_ID)
+            var materials = (from ba in db.Data_Initiative_Branch
+                             where (ba.branch_apd_id == branchID) && (ba.tpb_id == TPB_ID)
                              select ba);
             return materials.ToList();
         }
@@ -327,8 +353,8 @@ namespace TPA_Web_API.Models
 
         public Mobile_Branch_Initiative GetMobile_Branch_Initiative(int branchID)
         {
-            var mobile_initiatives = (from ba in db.Data_Branch_Allocation
-                                      where ba.branch_id == branchID
+            var mobile_initiatives = (from ba in db.Data_Initiative_Branch
+                                      where ba.branch_apd_id == branchID
                                       join i in db.Data_Initiative
                                       on new { ba.tpb_id, ba.account } equals new { i.tpb_id, i.account } into grps
                                       from p in grps
@@ -360,8 +386,8 @@ namespace TPA_Web_API.Models
 
         public List<Mobile_Initiative> GetMobile_Initiatives(int branchID)
         {
-            var mobile_initiatives = (from ba in db.Data_Branch_Allocation
-                                      where ba.branch_id == branchID
+            var mobile_initiatives = (from ba in db.Data_Initiative_Branch
+                                      where ba.branch_apd_id == branchID
                                       join i in db.Data_Initiative
                                       on new { ba.tpb_id, ba.account } equals new { i.tpb_id, i.account } into grps
                                       from p in grps
@@ -381,7 +407,7 @@ namespace TPA_Web_API.Models
                                           StartDate = grouped.Key.start_date,
                                           EndDate = grouped.Key.end_date,
                                           SellInDate = grouped.Key.sell_in_date
-                                      }).ToList();
+                                      });
 
             foreach (var item in mobile_initiatives)
             {
@@ -390,7 +416,7 @@ namespace TPA_Web_API.Models
                 item.MonthNo = GetTPA_Calendar(GetCurrentTime()).month_number;
             }
 
-            return mobile_initiatives;
+            return mobile_initiatives.ToList();
         }
 
         public List<Mobile_Material> GetMobile_Materials(int branchID, string TPB_ID)
@@ -400,10 +426,10 @@ namespace TPA_Web_API.Models
             foreach (var item in materials)
             {
                 var tpa_delivery = GetData_TPA_Delivery(TPB_ID, item.account, item.materials);
-                var branch_delivery = GetData_Branch_Delivery(item.branch_allocation_id);
-                var bundling = GetData_Installation(item.branch_allocation_id);
-                var issue = GetData_Installation_Issue(item.branch_allocation_id);
-                var offtake = GetData_Offtake(item.branch_allocation_id);
+                //var branch_delivery = GetData_Branch_Delivery(item.branch_allocation_id);
+                //var bundling = GetData_Installation(item.branch_allocation_id);
+                //var issue = GetData_Installation_Issue(item.branch_allocation_id);
+                //var offtake = GetData_Offtake(item.branch_allocation_id);
 
                 var initiative = (from i in db.Data_Initiative
                                    where (i.tpb_id == TPB_ID) && (i.materials==item.materials)
@@ -428,18 +454,18 @@ namespace TPA_Web_API.Models
                     material.TpaDeliveryStatus = tpa_delivery.tpa_delivery_status;
                 }
 
-                if (branch_delivery != null)
-                {
-                    material.BranchDeliveryStatusId = branch_delivery.branch_delivery_status_id;
-                    material.BranchDeliveryStatus = branch_delivery.branch_delivery_status;
-                }
+                //if (branch_delivery != null)
+                //{
+                //    material.BranchDeliveryStatusId = branch_delivery.branch_delivery_status_id;
+                //    material.BranchDeliveryStatus = branch_delivery.branch_delivery_status;
+                //}
 
-                if (bundling != null)
-                {
-                    material.BranchAllocation = item.branch_allocation;
-                    material.RunningActualAllocation = bundling.Bundled;
-                    material.BundledPercent = (((double)bundling.Bundled / (double)item.branch_allocation) * 100).ToString()+'%';
-                }
+                //if (bundling != null)
+                //{
+                //    material.BranchAllocation = item.branch_allocation;
+                //    material.RunningActualAllocation = bundling.Bundled;
+                //    material.BundledPercent = (((double)bundling.Bundled / (double)item.branch_allocation) * 100).ToString()+'%';
+                //}
 
                 //if (issue != null)
                 //{
@@ -447,104 +473,104 @@ namespace TPA_Web_API.Models
                 //    material.ImplemIssue = issue.issue;
                 //}5
 
-                if (offtake != null)
-                {
-                    material.TotalOfftake = offtake.Offtake;
-                    material.OfftakePercent = (((double)offtake.Offtake / (double)bundling.Bundled) * 100).ToString() + "%";
-                    material.EndingInventory = bundling.Bundled - offtake.Offtake;
-                }
+                //if (offtake != null)
+                //{
+                //    material.TotalOfftake = offtake.Offtake;
+                //    material.OfftakePercent = (((double)offtake.Offtake / (double)bundling.Bundled) * 100).ToString() + "%";
+                //    material.EndingInventory = bundling.Bundled - offtake.Offtake;
+                //}
                 
-                if(branch_delivery == null)
-                {
-                    material.MaterialType = 1;
-                }
-                else
-                {
-                    switch (branch_delivery.branch_delivery_status_id)
-                    {
-                        case 1:
-                            {
-                                material.MaterialType = 1;
-                                break;
-                            }
-                            case 2:
-                            {
-                                if ((item.date_completed == null)&&(initiative.start_date<=DbFunctions.TruncateTime(GetCurrentTime()))&& (initiative.end_date>= DbFunctions.TruncateTime(GetCurrentTime())))
-                                {
-                                    material.MaterialType = 2;
-                                }
-                                else if((item.date_completed!=null))
-                                {
-                                    material.MaterialType = 3;
-                                }
-                                break;
-                            }
+                //if(branch_delivery == null)
+                //{
+                //    material.MaterialType = 1;
+                //}
+                //else
+                //{
+                //    switch (branch_delivery.branch_delivery_status_id)
+                //    {
+                //        case 1:
+                //            {
+                //                material.MaterialType = 1;
+                //                break;
+                //            }
+                //            case 2:
+                //            {
+                //                if ((item.date_completed == null)&&(initiative.start_date<=DbFunctions.TruncateTime(GetCurrentTime()))&& (initiative.end_date>= DbFunctions.TruncateTime(GetCurrentTime())))
+                //                {
+                //                    material.MaterialType = 2;
+                //                }
+                //                else if((item.date_completed!=null))
+                //                {
+                //                    material.MaterialType = 3;
+                //                }
+                //                break;
+                //            }
 
-                        default:
-                            {
-                                break;
-                            }
+                //        default:
+                //            {
+                //                break;
+                //            }
 
-                    }
-                }
+                //    }
+                //}
                 
                 mobile_Materials.Add(material);
             }
             return mobile_Materials;
         }
 
-        public Data_TPA_Delivery GetData_TPA_Delivery(string tpb_id, string account, string material)
+        public Data_Initiative_Delivery GetData_TPA_Delivery(string tpb_id, string account, string material)
         {
-            Data_TPA_Delivery delivery = new Data_TPA_Delivery();
+            Data_Initiative_Delivery delivery = new Data_Initiative_Delivery();
 
-            delivery = (from d in db.Data_TPA_Delivery
+            delivery = (from d in db.Data_Initiative_Delivery
                         where (d.tpb_id == tpb_id) && (d.account == account) && (d.materials == material)
                         select d).FirstOrDefault();
             return delivery;
         }
 
-        public Data_Branch_Delivery GetData_Branch_Delivery(int branchAllocationID)
-        {
-            var delivery = (from d in db.Data_Branch_Delivery
-                            where d.branch_allocation_id == branchAllocationID
-                            select d);
-            return delivery.FirstOrDefault();
-        }
+        //public Data_Initiative_Branch GetData_Branch_Delivery(int branchAllocationID)
+        //{
+        //    var delivery = (from d in db.Data_Initiative_Branch
+        //                    where d.branch_allocation_id == branchAllocationID
+        //                    select d);
+        //    return delivery.FirstOrDefault();
+        //}
 
-        public Mobile_Installation GetData_Installation(int branchAllocationID)
-        {
-            var bundling = (from d in db.Data_Installation
-                            where d.branch_allocation_id == branchAllocationID
-                            group d by d.branch_allocation_id into grp
-                            select new Mobile_Installation
-                            {
-                                BranchAllocationId = grp.Key.Value,
-                                Bundled = grp.Sum(a => a.bundled)
-                            });
-            return bundling.FirstOrDefault();
-        }
+        //public Mobile_Installation GetData_Installation(int branchAllocationID)
+        //{
+        //    var bundling = (from d in db.Data_Installation
+        //                    where d.branch_allocation_id == branchAllocationID
+        //                    group d by d.branch_allocation_id into grp
+        //                    select new Mobile_Installation
+        //                    {
+        //                        BranchAllocationId = grp.Key.Value,
+        //                        Bundled = grp.Sum(a => a.bundled)
+        //                    });
+        //    return bundling.FirstOrDefault();
+        //}
 
-        public Data_Installation_Issue GetData_Installation_Issue(int branchAllocationID)
-        {
-            var issue = (from i in db.Data_Installation_Issue
-                         where i.branch_allocation_id == branchAllocationID
-                         orderby i.installation_issue_id descending
-                         select i);
-            return issue.FirstOrDefault();
-        }
+        //public Data_Installation_Issue GetData_Installation_Issue(int branchAllocationID)
+        //{
+        //    var issue = (from i in db.Data_Installation_Issue
+        //                 where i.branch_allocation_id == branchAllocationID
+        //                 orderby i.installation_issue_id descending
+        //                 select i);
+        //    return issue.FirstOrDefault();
+        //}
 
-        public Mobile_Offtake GetData_Offtake(int branchAllocationID)
-        {
-            var offtake = (from o in db.Data_Offtake
-                           where o.branch_allocation_id == branchAllocationID
-                           group o by o.branch_allocation_id into grp
-                           select new Mobile_Offtake
-                           {
-                               BranchAllocationId = grp.Key.Value,
-                               Offtake = grp.Sum(a => a.offtake)
-                           });
-            return offtake.FirstOrDefault();
-        }
+        //public Mobile_Offtake GetData_Offtake(int branchAllocationID)
+        //{
+        //    var offtake = (from o in db.Data_Offtake
+        //                   where o.branch_allocation_id == branchAllocationID
+        //                   group o by o.branch_allocation_id into grp
+        //                   select new Mobile_Offtake
+        //                   {
+        //                       BranchAllocationId = grp.Key.Value,
+        //                       Offtake = grp.Sum(a => a.offtake)
+        //                   });
+        //    return offtake.FirstOrDefault();
+        //}
 
         public Ref_TPA_Calendar GetTPA_Calendar(DateTime date)
         {
