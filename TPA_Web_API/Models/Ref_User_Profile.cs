@@ -14,13 +14,18 @@ namespace TPA_Web_API.Models
     
     public partial class Ref_User_Profile
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Ref_User_Profile()
+        {
+            this.Ref_User = new HashSet<Ref_User>();
+        }
+    
         public int user_profile_id { get; set; }
         public string firstname { get; set; }
         public string lastname { get; set; }
         public string position { get; set; }
         public string contact { get; set; }
         public string address { get; set; }
-        public Nullable<int> user_id { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public string created_by { get; set; }
         public Nullable<System.DateTime> modified_at { get; set; }
@@ -28,6 +33,7 @@ namespace TPA_Web_API.Models
         public Nullable<System.DateTime> deleted_at { get; set; }
         public string deleted_by { get; set; }
     
-        public virtual Ref_User Ref_User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Ref_User> Ref_User { get; set; }
     }
 }

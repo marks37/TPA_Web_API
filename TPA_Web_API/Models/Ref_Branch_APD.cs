@@ -14,13 +14,6 @@ namespace TPA_Web_API.Models
     
     public partial class Ref_Branch_APD
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Ref_Branch_APD()
-        {
-            this.Data_Initiative_Branch = new HashSet<Data_Initiative_Branch>();
-            this.Ref_Branch_Assignment = new HashSet<Ref_Branch_Assignment>();
-        }
-    
         public int branch_apd_id { get; set; }
         public string agency { get; set; }
         public string channel { get; set; }
@@ -42,10 +35,6 @@ namespace TPA_Web_API.Models
         public string modified_by { get; set; }
         public Nullable<System.DateTime> deleted_at { get; set; }
         public string deleted_by { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Data_Initiative_Branch> Data_Initiative_Branch { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Ref_Branch_Assignment> Ref_Branch_Assignment { get; set; }
+        public string ul_account { get; set; }
     }
 }

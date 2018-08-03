@@ -15,6 +15,7 @@ namespace TPA_Web_API.Models
     public partial class Data_Initiative_Branch_Line
     {
         public int initiative_branch_line_id { get; set; }
+        public Nullable<int> initiative_branch_id { get; set; }
         public Nullable<int> week_no { get; set; }
         public Nullable<int> month_no { get; set; }
         public Nullable<int> branch_delivered_qty { get; set; }

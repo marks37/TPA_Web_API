@@ -19,7 +19,7 @@ namespace TPA_Web_API.Models
 
     public class Mobile_Branch
     {
-        public int BranchID { get; set; }
+        public string BranchID { get; set; }
         public string BranchName { get; set; }
         public string BranchAddress { get; set; }
         public string TeamLead { get; set; }

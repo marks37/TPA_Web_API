@@ -13,10 +13,10 @@ namespace TPA_Web_API.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class Entities : DbContext
+    public partial class WCPIADBEntities : DbContext
     {
-        public Entities()
-            : base("name=TPA_Implem2Entities")
+        public WCPIADBEntities()
+            : base("name=WCPIADBEntities")
         {
         }
     
@@ -40,5 +40,8 @@ namespace TPA_Web_API.Models
         public virtual DbSet<Ref_TPA_Delivery_Status> Ref_TPA_Delivery_Status { get; set; }
         public virtual DbSet<Ref_User> Ref_User { get; set; }
         public virtual DbSet<Ref_User_Profile> Ref_User_Profile { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<Source_Data_Mobile> Source_Data_Mobile { get; set; }
+        public virtual DbSet<Source_Data_Mobile_Attrib_1> Source_Data_Mobile_Attrib_1 { get; set; }
     }
 }

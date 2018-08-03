@@ -12,35 +12,37 @@ namespace TPA_Web_API.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Data_Initiative_Branch
+    public partial class Source_Data_Mobile
     {
-        public int initiative_branch_id { get; set; }
         public string tpb_id { get; set; }
-        public string materials { get; set; }
-        public string account { get; set; }
         public string sfa_internal_id { get; set; }
-        public Nullable<int> branch_apd_id { get; set; }
+        public string material { get; set; }
+        public Nullable<int> tpa_delivery_status_id { get; set; }
+        public string tpa_delivery_status { get; set; }
         public Nullable<int> branch_delivery_status_id { get; set; }
-        public Nullable<System.DateTime> branch_delivery_date { get; set; }
         public string branch_delivery_status { get; set; }
+        public Nullable<int> branch_delivery_qty { get; set; }
         public Nullable<int> branch_allocation { get; set; }
         public Nullable<int> total_bundled { get; set; }
-        public Nullable<decimal> percent_bundled { get; set; }
-        public Nullable<System.DateTime> start_of_implem { get; set; }
-        public string implem_status { get; set; }
+        public Nullable<int> actual_bundled { get; set; }
         public Nullable<int> implem_status_id { get; set; }
-        public string implem_issue { get; set; }
+        public string implem_status { get; set; }
         public Nullable<int> implem_issue_id { get; set; }
-        public Nullable<System.DateTime> date_of_completion { get; set; }
+        public string implem_issue { get; set; }
+        public string percent_bundled { get; set; }
         public Nullable<int> total_offtake { get; set; }
-        public Nullable<decimal> percent_offtake { get; set; }
+        public Nullable<int> actual_offtake { get; set; }
+        public string percent_offtake { get; set; }
         public Nullable<int> ending_inventory { get; set; }
         public string offtake_analysis { get; set; }
-        public Nullable<System.DateTime> created_at { get; set; }
+        public string start_date { get; set; }
+        public string end_date { get; set; }
+        public Nullable<int> month_no { get; set; }
+        public Nullable<int> week_no { get; set; }
+        public string created_at { get; set; }
         public string created_by { get; set; }
-        public Nullable<System.DateTime> modified_at { get; set; }
-        public string modified_by { get; set; }
-        public Nullable<System.DateTime> deleted_at { get; set; }
-        public string deleted_by { get; set; }
+        public string sync_at { get; set; }
+        public Nullable<System.DateTime> pulled_at { get; set; }
+        public int source_data_mobile_id { get; set; }
     }
 }

@@ -18,17 +18,16 @@ namespace TPA_Web_API.Models
         public Ref_User()
         {
             this.Ref_Branch_Assignment = new HashSet<Ref_Branch_Assignment>();
-            this.Ref_User_Profile = new HashSet<Ref_User_Profile>();
         }
     
         public int user_id { get; set; }
         public string username { get; set; }
         public string hash { get; set; }
         public byte[] salt { get; set; }
+        public Nullable<int> user_profile_id { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Ref_Branch_Assignment> Ref_Branch_Assignment { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Ref_User_Profile> Ref_User_Profile { get; set; }
+        public virtual Ref_User_Profile Ref_User_Profile { get; set; }
     }
 }

@@ -33,8 +33,22 @@
         <input type="password" name="password" id="password" />
     </div>
     <br />
-    <input type="button" value="Login" onclick=""/>
+    <input type="button" value="Login" onclick="" />
 
+    <h3>Initiatives Post</h3>
+    <br />
+    <form method="post" action="api/users/initiatives">
+        <label>Material</label>
+        <input type="text" id="Material" name="Material" />
+        <input type="submit" value="Submit" />
+    </form>
+    <br />
+    <h3>Image Post</h3>
+    <form method="post" action="api/users/image">
+        <label>Material</label>
+        <input type="text" id="Material" name="Material" />
+        <input type="submit" value="Submit" />
+    </form>
 
     <script src="Scripts/jquery-3.3.1.min.js"></script>
     <script>
@@ -58,7 +72,7 @@
 
 
 
-            login = {username: }
+            login = { username: }
             $.ajax({
                 type: "POST",
                 url

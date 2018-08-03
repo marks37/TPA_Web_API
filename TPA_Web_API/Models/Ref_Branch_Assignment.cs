@@ -15,6 +15,7 @@ namespace TPA_Web_API.Models
     public partial class Ref_Branch_Assignment
     {
         public int branch_assignment_id { get; set; }
+        public string sfa_internal_id { get; set; }
         public Nullable<int> branch_apd_id { get; set; }
         public Nullable<int> user_id { get; set; }
         public string status { get; set; }
@@ -25,7 +26,6 @@ namespace TPA_Web_API.Models
         public Nullable<System.DateTime> deleted_at { get; set; }
         public string deleted_by { get; set; }
     
-        public virtual Ref_Branch_APD Ref_Branch_APD { get; set; }
         public virtual Ref_User Ref_User { get; set; }
     }
 }

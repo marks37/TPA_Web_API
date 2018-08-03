@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
+using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -10,8 +13,9 @@ namespace TPA_Web_API.Models
 {
     public class DBLayer
     {
-        private Entities db = new Entities();
+        private WCPIADBEntities db = new WCPIADBEntities();
         private static int saltLengthLimit = 256;
+        string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["TPADBConnectionString"].ConnectionString;
 
         public UserProfile LoginUser(string username, string password)
         {
@@ -22,7 +26,7 @@ namespace TPA_Web_API.Models
 
             try
             {
-                using (db = new Entities())
+                using (db = new WCPIADBEntities())
                 {
                     var user = db.Ref_User.Where(s => s.username == username.Trim()).FirstOrDefault();
                     if (user != null)
@@ -36,16 +40,16 @@ namespace TPA_Web_API.Models
                     if (isLogin)
                     {
                         userProfile = (from p in db.Ref_User_Profile
-                                       where p.user_id == user.user_id
+                                       where p.user_profile_id == user.user_id
                                        select new UserProfile
                                        {
-                                        Address = p.address,
-                                        Contact = p.contact,
-                                        Firstname = p.firstname,
-                                        Lastname = p.lastname,
-                                        Position = p.position,
-                                        UserId = p.user_id,
-                                        Username = user.username
+                                           //Address = p.address,
+                                           //Contact = p.contact,
+                                           //Firstname = p.firstname,
+                                           //Lastname = p.lastname,
+                                           Position = p.position,
+                                           UserId = p.user_profile_id,
+                                           Username = user.username
                                        }).FirstOrDefault();
                     }
                 }
@@ -168,7 +172,11 @@ namespace TPA_Web_API.Models
         public List<Ref_Branch_APD> GetAssignedBranchesWithInitiatives(int userID)
         {
             var branchesWithInitiatives = (from dba in db.Data_Initiative_Branch
-                                           group dba by dba.branch_apd_id into grp
+                                           where dba.branch_allocation > 0
+                                           join id in db.Data_Initiative_Delivery
+                                           on new { dba.account, dba.materials, dba.tpb_id } equals new { id.account, id.materials, id.tpb_id }
+                                           where id.tpa_delivery_status_id != 3
+                                           group dba by dba.sfa_internal_id into grp
                                            select grp.Key).ToList();
 
             //var assignedBranches = (from ba in db.Ref_Branch_Assignment
@@ -187,9 +195,14 @@ namespace TPA_Web_API.Models
                                     where ba.user_id == userID
                                     select b_apd).ToList();
 
+            //var filtered = (from a in assignedBranches
+            //                join b in branchesWithInitiatives   
+            //                on a.sfa_id equals b.Value
+            //                select a);
+
+
             var filtered = (from a in assignedBranches
-                            join b in branchesWithInitiatives
-                            on a.branch_apd_id equals b.Value
+                            where branchesWithInitiatives.Contains(a.sfa_id)
                             select a);
 
             return filtered.ToList();
@@ -219,8 +232,8 @@ namespace TPA_Web_API.Models
             var assignedBranches = GetAssignedBranchesWithInitiatives(userID);
             var accountList = (from g in assignedBranches
                                where g.channel == channel
-                               group g by new { g.account, g.channel } into grp
-                               select grp.Key.account);
+                               group g by new { g.ul_account, g.channel } into grp
+                               select grp.Key.ul_account);
             return accountList.ToList();
         }
 
@@ -266,19 +279,20 @@ namespace TPA_Web_API.Models
 
         public List<Mobile_Branch> GetAssignedMobile_Branches(int userID, string account)
         {
-            var assignedBranches = GetAssignedBranchesWithInitiatives(userID);
+            var assignedBranches = GetAssignedBranchesWithInitiatives(userID).Where(p => p.ul_account == account);
             List<Mobile_Branch> mobile_Branches = new List<Mobile_Branch>();
             foreach (var item in assignedBranches)
             {
                 Mobile_Branch mobile_Branch = new Mobile_Branch()
                 {
-                    BranchID = item.branch_apd_id,
+                    BranchID = item.sfa_id,
                     BranchAddress = item.address,
                     BranchName = item.branch_name,
                     CDS = item.cds,
                     TeamLead = item.team_lead,
-                    InitiativeList = GetMobile_Initiatives(item.branch_apd_id)
+                    InitiativeList = GetMobile_Initiatives(item.sfa_id),
                 };
+                mobile_Branch.InitiativeCount = mobile_Branch.InitiativeList.Count();
                 mobile_Branches.Add(mobile_Branch);
             }
 
@@ -384,10 +398,13 @@ namespace TPA_Web_API.Models
             return mobile_Branch_Initiative;
         }
 
-        public List<Mobile_Initiative> GetMobile_Initiatives(int branchID)
+        public List<Mobile_Initiative> GetMobile_Initiatives(string branchID)
         {
             var mobile_initiatives = (from ba in db.Data_Initiative_Branch
-                                      where ba.branch_apd_id == branchID
+                                      where ba.sfa_internal_id == branchID && ba.branch_allocation > 0
+                                      //join id in db.Data_Initiative_Delivery
+                                      //on new { ba.account, ba.materials, ba.tpb_id } equals new { id.account, id.materials, id.tpb_id }
+                                      //where id.tpa_delivery_status_id != 3
                                       join i in db.Data_Initiative
                                       on new { ba.tpb_id, ba.account } equals new { i.tpb_id, i.account } into grps
                                       from p in grps
@@ -407,7 +424,7 @@ namespace TPA_Web_API.Models
                                           StartDate = grouped.Key.start_date,
                                           EndDate = grouped.Key.end_date,
                                           SellInDate = grouped.Key.sell_in_date
-                                      });
+                                      }).ToList();
 
             foreach (var item in mobile_initiatives)
             {
@@ -416,43 +433,95 @@ namespace TPA_Web_API.Models
                 item.MonthNo = GetTPA_Calendar(GetCurrentTime()).month_number;
             }
 
-            return mobile_initiatives.ToList();
+            return mobile_initiatives;
         }
 
-        public List<Mobile_Material> GetMobile_Materials(int branchID, string TPB_ID)
+        public List<Mobile_Material> GetMobile_Materials(string branchID, string TPB_ID)
         {
-            var materials = GetData_Branch_Allocations(branchID, TPB_ID);
+            //var materials = GetData_Branch_Allocations(branchID, TPB_ID);
+
+            var materials = (from ib in db.Data_Initiative_Branch
+                             where ib.sfa_internal_id == branchID && ib.tpb_id == TPB_ID
+                             select ib).ToList();
+
+            var initiatives = GetDistinctData_Initiatives();
+
+            var initiativeDeliveries = (from i in initiatives
+                                        join id in db.Data_Initiative_Delivery
+                                        on new { i.tpb_id, i.materials, i.account } equals new { id.tpb_id, id.materials, id.account } into tmp
+                                        from t in tmp
+                                        select new
+                                        { i, t }).ToList();
+
             List<Mobile_Material> mobile_Materials = new List<Mobile_Material>();
             foreach (var item in materials)
             {
-                var tpa_delivery = GetData_TPA_Delivery(TPB_ID, item.account, item.materials);
+                Mobile_Material material = new Mobile_Material()
+                {
+                    Material = item.materials,
+                    TpaDeliveryStatus = (from id in initiativeDeliveries
+                                         where id.i.materials == item.materials
+                                         select id.t.tpa_delivery_status).FirstOrDefault(),
+                    TpaDeliveryStatusId = (from id in initiativeDeliveries
+                                           where id.i.materials == item.materials
+                                           select id.t.tpa_delivery_status_id).FirstOrDefault(),
+                    DateDeliveredToTPA = (from id in initiativeDeliveries
+                                          where id.i.materials == item.materials
+                                          select id.t.tpa_delivery_date).FirstOrDefault().ToString(),
+                    BranchDeliveryStatus = item.branch_delivery_status,
+                    BranchDeliveryStatusId = item.branch_delivery_status_id,
+                    DateDeliveredToBranches = item.branch_delivery_date.ToString(),
+                    BranchAllocation = item.branch_allocation,
+                    //RunningActualAllocation = (from ibl in db.Data_Initiative_Branch_Line
+                    //                           where ibl.initiative_branch_id == item.initiative_branch_id
+                    //                           group ibl by ibl.initiative_branch_id into grp
+                    //                           select grp.Sum(p => p.actual_bundled)).FirstOrDefault(),
+                    RunningActualAllocation = item.total_bundled == null ? 0 : item.total_bundled,
+                    Bundled = 0,
+                    ImplemStatus = item.implem_status,
+                    ImplemStatusId = item.implem_status_id,
+                    BundledPercent = ((item.total_bundled == null ? 0 : (double)item.total_bundled / item.branch_allocation == null ? 0 : (double)item.branch_allocation) * 100).ToString() + '%',
+                    //BundledPercent = item.percent_bundled==null?0:item.percent_bundled,
+                    TotalOfftake = item.total_offtake == null ? 0 : (int)item.total_offtake,
+                    OfftakeBundled = 0,
+                    OfftakePercent = ((item.total_offtake == null ? 0 : (double)item.total_offtake / item.total_bundled == null ? 0 : (double)item.total_bundled) * 100).ToString() + "%",
+                    //OfftakePercent = ((item.total_offtake == null ? 0 : (double)item.total_offtake / item.total_bundled == null ? 0 : (double)item.total_bundled) * 100).ToString() + "%",
+                    EndingInventory = item.ending_inventory == null ? 0 : (int)item.ending_inventory,
+                    OfftakeAnalysis = item.offtake_analysis==null?"Slow Moving":item.offtake_analysis,
+                    DateCompleted = item.date_of_completion.ToString()
+                };
+
+
+
+                #region MyRegion
+                //var tpa_delivery = GetData_TPA_Delivery(TPB_ID, item.account, item.materials);
                 //var branch_delivery = GetData_Branch_Delivery(item.branch_allocation_id);
                 //var bundling = GetData_Installation(item.branch_allocation_id);
                 //var issue = GetData_Installation_Issue(item.branch_allocation_id);
                 //var offtake = GetData_Offtake(item.branch_allocation_id);
 
-                var initiative = (from i in db.Data_Initiative
-                                   where (i.tpb_id == TPB_ID) && (i.materials==item.materials)
-                                   group i by new { i.tpb_id, i.materials} into grps
-                                   select grps.OrderByDescending(p => p.created_at).FirstOrDefault() into tmp
-                                   select new {
-                                       tmp.tpb_id,
-                                       tmp.materials,
-                                       tmp.start_date,
-                                       tmp.end_date
-                                   }).FirstOrDefault();
-                
-                Mobile_Material material = new Mobile_Material();
-                material.Material = item.materials;
-                material.ImplemStatusId = item.implem_status_id;
-                material.ImplemStatus = item.implem_status;
-                material.OfftakeAnalysis = item.offtake_analysis;
+                //var initiative = (from i in db.Data_Initiative
+                //                   where (i.tpb_id == TPB_ID) && (i.materials==item.materials)
+                //                   group i by new { i.tpb_id, i.materials} into grps
+                //                   select grps.OrderByDescending(p => p.created_at).FirstOrDefault() into tmp
+                //                   select new {
+                //                       tmp.tpb_id,
+                //                       tmp.materials,
+                //                       tmp.start_date,
+                //                       tmp.end_date
+                //                   }).FirstOrDefault();
 
-                if (tpa_delivery != null)
-                {
-                    material.TpaDeliveryStatusId = tpa_delivery.tpa_delivery_status_id;
-                    material.TpaDeliveryStatus = tpa_delivery.tpa_delivery_status;
-                }
+                //Mobile_Material material = new Mobile_Material();
+                //material.Material = item.materials;
+                //material.ImplemStatusId = item.implem_status_id;
+                //material.ImplemStatus = item.implem_status;
+                //material.OfftakeAnalysis = item.offtake_analysis;
+
+                //if (tpa_delivery != null)
+                //{
+                //    material.TpaDeliveryStatusId = tpa_delivery.tpa_delivery_status_id;
+                //    material.TpaDeliveryStatus = tpa_delivery.tpa_delivery_status;
+                //}
 
                 //if (branch_delivery != null)
                 //{
@@ -479,7 +548,7 @@ namespace TPA_Web_API.Models
                 //    material.OfftakePercent = (((double)offtake.Offtake / (double)bundling.Bundled) * 100).ToString() + "%";
                 //    material.EndingInventory = bundling.Bundled - offtake.Offtake;
                 //}
-                
+
                 //if(branch_delivery == null)
                 //{
                 //    material.MaterialType = 1;
@@ -512,8 +581,9 @@ namespace TPA_Web_API.Models
                 //            }
 
                 //    }
-                //}
-                
+                //} 
+                #endregion
+
                 mobile_Materials.Add(material);
             }
             return mobile_Materials;
@@ -576,6 +646,7 @@ namespace TPA_Web_API.Models
         {
             var calendar = (from c in db.Ref_TPA_Calendar
                             where (DbFunctions.TruncateTime(c.week_start) <= DbFunctions.TruncateTime(date)) && (DbFunctions.TruncateTime(c.week_end) >= DbFunctions.TruncateTime(date))
+                            //where (DbFunctions.TruncateTime(c.week_start) <= date.Date) && (DbFunctions.TruncateTime(c.week_end) >= date.Date)
                             select c).FirstOrDefault();
             return calendar;
         }
@@ -587,5 +658,579 @@ namespace TPA_Web_API.Models
             return _localTime;
         }
 
+        public List<Initiatives> PostInitiatives(List<Initiatives> initiatives)
+        {
+            #region Define DataTable and Columns
+            DataTable dt = new DataTable();
+            DataColumn colTpbId = new DataColumn("tpb_id");
+            DataColumn colSfaInternalId = new DataColumn("sfa_internal_id");
+            DataColumn colMaterial = new DataColumn("material");
+            //DataColumn colTpaDeliveryStatusId = new DataColumn("tpa_delivery_status_id");
+            //DataColumn colTpaDeliveryStatus = new DataColumn("tpa_delivery_status");
+            DataColumn colTpaDeliveryDate = new DataColumn("tpa_delivery_date");
+            DataColumn colBranchDeliveryStatusId = new DataColumn("branch_delivery_status_id");
+            DataColumn colBranchDeliveryStatus = new DataColumn("branch_delivery_status");
+            DataColumn colBranchDeliveredQty = new DataColumn("branch_delivery_qty");
+            DataColumn colBranchDeliveryDate = new DataColumn("branch_delivery_date");
+            //DataColumn colBranchAllocation = new DataColumn("branch_allocation");
+            DataColumn colTotalBundled = new DataColumn("total_bundled");
+            DataColumn colActualBundled = new DataColumn("actual_bundled");
+            DataColumn colImplemStatusId = new DataColumn("implem_status_id");
+            DataColumn colImplemStatus = new DataColumn("implem_status");
+            DataColumn colImplemIssueId = new DataColumn("implem_issue_id");
+            DataColumn colImplemIssue = new DataColumn("implem_issue");
+            DataColumn colPercentBundled = new DataColumn("percent_bundled");
+            DataColumn colTotalOfftake = new DataColumn("total_offtake");
+            DataColumn colActualOfftake = new DataColumn("actual_offtake");
+            DataColumn colPercentOfftake = new DataColumn("percent_offtake");
+            DataColumn colEndingInventory = new DataColumn("ending_inventory");
+            DataColumn colOfftakeAnalysis = new DataColumn("offtake_analysis");
+            //DataColumn colStartDate = new DataColumn("start_date");
+            //DataColumn colEndDate = new DataColumn("end_date");
+            DataColumn colDateOfCompletion = new DataColumn("date_of_completion");
+            DataColumn colMonthNo = new DataColumn("month_no");
+            DataColumn colWeekNo = new DataColumn("week_no");
+            DataColumn colCreatedAt = new DataColumn("created_at");
+            DataColumn colCreatedBy = new DataColumn("created_by");
+            DataColumn colSyncAt = new DataColumn("sync_at");
+
+            //Add Columns
+            dt.Columns.Add(colTpbId);
+            dt.Columns.Add(colSfaInternalId);
+            dt.Columns.Add(colMaterial);
+            //dt.Columns.Add(colTpaDeliveryStatusId);
+            //dt.Columns.Add(colTpaDeliveryStatus);
+            dt.Columns.Add(colTpaDeliveryDate);
+            dt.Columns.Add(colBranchDeliveryStatusId);
+            dt.Columns.Add(colBranchDeliveryStatus);
+            dt.Columns.Add(colBranchDeliveredQty);
+            dt.Columns.Add(colBranchDeliveryDate);
+            //dt.Columns.Add(colBranchAllocation);
+            dt.Columns.Add(colTotalBundled);
+            dt.Columns.Add(colActualBundled);
+            dt.Columns.Add(colImplemStatusId);
+            dt.Columns.Add(colImplemStatus);
+            dt.Columns.Add(colImplemIssueId);
+            dt.Columns.Add(colImplemIssue);
+            dt.Columns.Add(colPercentBundled);
+            dt.Columns.Add(colTotalOfftake);
+            dt.Columns.Add(colActualOfftake);
+            dt.Columns.Add(colPercentOfftake);
+            dt.Columns.Add(colEndingInventory);
+            dt.Columns.Add(colOfftakeAnalysis);
+            //dt.Columns.Add(colStartDate);
+            //dt.Columns.Add(colEndDate);
+            dt.Columns.Add(colDateOfCompletion);
+            dt.Columns.Add(colMonthNo);
+            dt.Columns.Add(colWeekNo);
+            dt.Columns.Add(colCreatedAt);
+            dt.Columns.Add(colCreatedBy);
+            dt.Columns.Add(colSyncAt);
+            #endregion 
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                //using (var command = new SqlCommand(query, connection))
+                //{
+                foreach (Initiatives i in initiatives)
+                {
+                    DataRow row = dt.NewRow();
+                    row[colTpbId] = i.TpbId;
+                    row[colSfaInternalId] = i.SfaInternalId;
+                    row[colMaterial] = i.Material;
+                    //row[colTpaDeliveryStatusId] = i.TpaDeliveryStatusId;
+                    //row[colTpaDeliveryStatus] = i.TpaDeliveryStatus;
+                    row[colTpaDeliveryDate] = i.DateDeliveredToTpa;
+                    row[colBranchDeliveryStatusId] = i.BranchDeliveryStatusId;
+                    row[colBranchDeliveryStatus] = i.BranchDeliveryStatus;
+                    row[colBranchDeliveredQty] = i.BranchDeliveredQty;
+                    row[colBranchDeliveryDate] = i.DateDeliveredToBranches;
+                    //row[colBranchAllocation] = i.BranchAllocation;
+                    row[colTotalBundled] = i.TotalBundled;
+                    row[colActualBundled] = i.ActualBundled;
+                    row[colImplemStatusId] = i.ImplemStatusId;
+                    row[colImplemStatus] = i.ImplemStatus;
+                    row[colImplemIssueId] = i.ImplemIssueId;
+                    row[colImplemIssue] = i.ImplemIssue;
+                    row[colPercentBundled] = i.PercentBundled;
+                    row[colTotalOfftake] = i.TotalOfftake;
+                    row[colActualOfftake] = i.ActualOfftake;
+                    row[colPercentOfftake] = i.PercentOfftake;
+                    row[colEndingInventory] = i.EndingInventory;
+                    row[colOfftakeAnalysis] = i.OfftakeAnalysis;
+                    //row[colStartDate] = i.StartDate;
+                    //row[colEndDate] = i.EndDate;
+                    row[colDateOfCompletion] = i.DateCompleted;
+                    row[colMonthNo] = i.MonthNo;
+                    row[colWeekNo] = i.WeekNo;
+                    row[colCreatedAt] = i.CreatedAt;
+                    row[colCreatedBy] = i.CreatedBy;
+                    row[colSyncAt] = i.SyncAt;
+                    dt.Rows.Add(row);
+                    if (i.Files != null)
+                    {
+                        if (i.Files.Count() > 0)
+                        {
+                            PostFiles(i.Files);
+                        }
+                    }
+                    else
+                    {
+                        Error_Insert("No files found", "PostInitiatives/PostFiles");
+                    }
+                }
+
+                // Create the SqlBulkCopy object. 
+                using (SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(connectionString))
+                {
+                    //Set the database table name
+                    sqlBulkCopy.DestinationTableName = "dbo.Source_Data_Mobile";
+
+                    //[OPTIONAL]: Map the DataTable columns with that of the database table
+                    // Guarantee that columns are mapped correctly by defining the column mappings for the order.
+                    sqlBulkCopy.ColumnMappings.Add("tpb_id", "tpb_id");
+                    sqlBulkCopy.ColumnMappings.Add("sfa_internal_id", "sfa_internal_id");
+                    sqlBulkCopy.ColumnMappings.Add("material", "material");
+                    //sqlBulkCopy.ColumnMappings.Add("tpa_delivery_status_id", "tpa_delivery_status_id");
+                    //sqlBulkCopy.ColumnMappings.Add("tpa_delivery_status", "tpa_delivery_status");
+                    sqlBulkCopy.ColumnMappings.Add("tpa_delivery_date", "tpa_delivery_date");
+                    sqlBulkCopy.ColumnMappings.Add("branch_delivery_status_id", "branch_delivery_status_id");
+                    sqlBulkCopy.ColumnMappings.Add("branch_delivery_status", "branch_delivery_status");
+                    sqlBulkCopy.ColumnMappings.Add("branch_delivery_qty", "branch_delivery_qty");
+                    sqlBulkCopy.ColumnMappings.Add("branch_delivery_date", "branch_delivery_date");
+                    //sqlBulkCopy.ColumnMappings.Add("branch_allocation", "branch_allocation");
+                    sqlBulkCopy.ColumnMappings.Add("total_bundled", "total_bundled");
+                    sqlBulkCopy.ColumnMappings.Add("actual_bundled", "actual_bundled");
+                    sqlBulkCopy.ColumnMappings.Add("implem_status_id", "implem_status_id");
+                    sqlBulkCopy.ColumnMappings.Add("implem_status", "implem_status");
+                    sqlBulkCopy.ColumnMappings.Add("implem_issue_id", "implem_issue_id");
+                    sqlBulkCopy.ColumnMappings.Add("implem_issue", "implem_issue");
+                    sqlBulkCopy.ColumnMappings.Add("percent_bundled", "percent_bundled");
+                    sqlBulkCopy.ColumnMappings.Add("total_offtake", "total_offtake");
+                    sqlBulkCopy.ColumnMappings.Add("actual_offtake", "actual_offtake");
+                    sqlBulkCopy.ColumnMappings.Add("percent_offtake", "percent_offtake");
+                    sqlBulkCopy.ColumnMappings.Add("ending_inventory", "ending_inventory");
+                    sqlBulkCopy.ColumnMappings.Add("offtake_analysis", "offtake_analysis");
+                    //sqlBulkCopy.ColumnMappings.Add("start_date", "start_date");
+                    //sqlBulkCopy.ColumnMappings.Add("end_date", "end_date");
+                    sqlBulkCopy.ColumnMappings.Add("date_of_completion", "date_of_completion");
+                    sqlBulkCopy.ColumnMappings.Add("month_no", "month_no");
+                    sqlBulkCopy.ColumnMappings.Add("week_no", "week_no");
+                    sqlBulkCopy.ColumnMappings.Add("created_at", "created_at");
+                    sqlBulkCopy.ColumnMappings.Add("created_by", "created_by");
+                    sqlBulkCopy.ColumnMappings.Add("sync_at", "sync_at");
+                    connection.Open();
+                    sqlBulkCopy.WriteToServer(dt);
+                    connection.Close();
+                }
+
+                #region Parameters
+                //command.Parameters.AddWithValue("@material", initiatives.Material == String.Empty ? SqlString.Null : initiatives.Material);
+                //command.Parameters.AddWithValue("@tpa_delivery_status_id", initiatives.TpaDeliveryStatusId.HasValue ? initiatives.TpaDeliveryStatusId.Value : SqlInt32.Null);
+                //command.Parameters.AddWithValue("@tpa_delivery_status", initiatives.TpaDeliveryStatus == String.Empty ? SqlString.Null : initiatives.TpaDeliveryStatus);
+                //command.Parameters.AddWithValue("@branch_delivery_status_id", initiatives.BranchDeliveryStatusId.HasValue ? initiatives.BranchDeliveryStatusId.Value : SqlInt32.Null);
+                //command.Parameters.AddWithValue("@branch_delivery_status", initiatives.BranchDeliveryStatus == String.Empty ? SqlString.Null : initiatives.BranchDeliveryStatus);
+                //command.Parameters.AddWithValue("@branch_delivered_qty", initiatives.BranchDeliveredQty.HasValue ? initiatives.BranchDeliveredQty.Value : SqlInt32.Null);
+                //command.Parameters.AddWithValue("@branch_allocation", initiatives.BranchAllocation.HasValue ? initiatives.BranchAllocation.Value : SqlInt32.Null);
+                //command.Parameters.AddWithValue("@total_bundled", initiatives.TotalBundled.HasValue ? initiatives.TotalBundled.Value : SqlInt32.Null);
+                //command.Parameters.AddWithValue("@actual_bundled", initiatives.ActualBundled.HasValue ? initiatives.ActualBundled.Value : SqlInt32.Null);
+                //command.Parameters.AddWithValue("@implem_status_id", initiatives.ImplemStatusId.HasValue ? initiatives.ImplemStatusId.Value : SqlInt32.Null);
+                //command.Parameters.AddWithValue("@implem_status", initiatives.ImplemStatus == String.Empty ? SqlString.Null : initiatives.ImplemStatus);
+                //command.Parameters.AddWithValue("@percent_bundled", initiatives.PercentBundled == String.Empty ? SqlString.Null : initiatives.PercentBundled);
+                //command.Parameters.AddWithValue("@total_offtake", initiatives.TotalOfftake.HasValue ? initiatives.TotalOfftake.Value : SqlInt32.Null);
+                //command.Parameters.AddWithValue("@actual_offtake", initiatives.ActualOfftake.HasValue ? initiatives.ActualOfftake.Value : SqlInt32.Null);
+                //command.Parameters.AddWithValue("@percent_offtake", initiatives.PercentOfftake== String.Empty ? SqlString.Null : initiatives.PercentOfftake);
+                //command.Parameters.AddWithValue("@ending_inventory", initiatives.EndingInventory.HasValue ? initiatives.EndingInventory.Value : SqlInt32.Null);
+                //command.Parameters.AddWithValue("@offtake_analysis", initiatives.OfftakeAnalysis == String.Empty ? SqlString.Null : initiatives.OfftakeAnalysis);
+                //command.Parameters.AddWithValue("@start_date", initiatives.StartDate == String.Empty ? SqlString.Null : initiatives.StartDate);
+                //command.Parameters.AddWithValue("@end_date", initiatives.EndDate == String.Empty ? SqlString.Null : initiatives.EndDate);
+                //command.Parameters.AddWithValue("@month_no", initiatives.MonthNo.HasValue ? initiatives.MonthNo.Value : SqlInt32.Null);
+                //command.Parameters.AddWithValue("@week_no", initiatives.WeekNo.HasValue ? initiatives.WeekNo.Value : SqlInt32.Null);
+                #endregion
+
+                //connection.Open();
+                //command.ExecuteNonQuery();
+                //connection.Close();
+                //}
+
+                using (var command = new SqlCommand("sp_BranchInitAndLine_UpdateInsert", connection))
+                {
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    connection.Open();
+                    object o = command.ExecuteScalar();
+                    connection.Close();
+                }
+
+
+            }
+
+            //var source_mobile = (db.Source_Data_Mobile.Where(p => p.pulled_at == null && p.created_by == username));
+            //var NewDataInitiativeBranchLine = (from sdm in db.Source_Data_Mobile
+            //                                   where sdm.pulled_at == null && sdm.created_by == username
+            //                                   join dib in db.Data_Initiative_Branch
+            //                                   on new { sdm.tpb_id, materials = sdm.material, sdm.sfa_internal_id } equals new { dib.tpb_id, dib.materials, dib.sfa_internal_id }
+            //                                   )
+
+
+
+            return initiatives;
+        }
+
+        public List<Category> GetCategory(int status_id)
+        {
+            List<Category> category = new List<Category>();
+
+            DataTable dt = GetData(string.Format(@"SELECT DISTINCT [category] FROM [dbo].[Ref_Implem_Issue] a
+                                                    LEFT JOIN [dbo].[Ref_Implem_Status] b ON a.implem_status_id = b.implem_status_id
+                                                    WHERE a.[implem_status_id] = '{0}'", status_id));
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                category.Add(new Category
+                {
+                    CategoryDesc = Convert.ToString(dt.Rows[i]["category"]),
+                    Issues = GetIssues(status_id, Convert.ToString(dt.Rows[i]["category"])),
+                });
+            }
+
+            return category;
+        }
+
+        public List<Issue> GetIssues(int status_id, string category)
+        {
+            List<Issue> issues = new List<Issue>();
+
+            DataTable dt = GetData(string.Format("SELECT [implem_issue_id], [issue] FROM [dbo].[Ref_Implem_Issue] WHERE [implem_status_id] = '{0}' AND [category] = '{1}'", status_id, category));
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                issues.Add(new Issue
+                {
+                    IssueId = Convert.ToInt32(dt.Rows[i]["implem_issue_id"]),
+                    IssueDesc = Convert.ToString(dt.Rows[i]["issue"])
+                });
+            }
+
+            return issues;
+        }
+
+        private DataTable GetData(string query)
+        {
+            SqlCommand cmd = new SqlCommand(query);
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlDataAdapter sda = new SqlDataAdapter())
+                {
+                    cmd.Connection = con;
+                    sda.SelectCommand = cmd;
+                    using (DataTable dt = new DataTable())
+                    {
+                        sda.Fill(dt);
+                        return dt;
+                    }
+                }
+            }
+        }
+
+        public Status GetStatus(int status_id)
+        {
+            string query = string.Format(@"SELECT [implem_status_id], [implem_status_val] FROM [dbo].[Ref_Implem_Status] WHERE [implem_status_id] = @status_id");
+
+            Status status = new Status();
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@status_id", status_id);
+
+                    if (connection.State == ConnectionState.Closed)
+                        connection.Open();
+
+                    var reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        status.StatusId = reader.GetInt32(0);
+                        status.StatusDesc = (reader.IsDBNull(1) ? null : reader.GetString(1));
+                        status.Category = GetCategory(reader.GetInt32(0));
+                    }
+
+                    connection.Close();
+                }
+            }
+
+            return status;
+        }
+
+        public Images GetImage()
+        {
+            string query = string.Format(@"SELECT TOP 1 [initiative_id]
+      ,[material]
+      ,[attachment_id]
+      ,[attachment_file_name]
+      ,[image]
+  FROM [dbo].[Source_Data_Mobile_Attrib_1_Old]");
+
+            Images image = new Images();
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(query, connection))
+                {
+                    if (connection.State == ConnectionState.Closed)
+                        connection.Open();
+
+                    var reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        image.InitiativeId = reader.IsDBNull(0) ? null : reader.GetString(0);
+                        image.Material = reader.IsDBNull(1) ? null : reader.GetString(1);
+                        image.AttachmentId = reader.IsDBNull(2) ? null : reader.GetString(2);
+                        image.AttachmentFileName = reader.IsDBNull(3) ? null : reader.GetString(3);
+                        image.Image = Convert.ToBase64String((byte[])reader[4]);
+                    }
+
+                    connection.Close();
+                }
+            }
+            return image;
+        }
+
+        public UserProfile GetByUsername(string username, string password)
+        {
+            string oldHASHValue = string.Empty;
+            byte[] salt = new byte[saltLengthLimit];
+
+            string query = string.Format(@"SELECT b.[user_id], a.[user_profile_id],[username],[firstname],[lastname],[position],[hash],[salt]
+                                    FROM [dbo].[Ref_User_Profile] a
+                                    LEFT JOIN [dbo].[Ref_User] b ON a.user_profile_id = b.user_profile_id
+                                    WHERE [username] = @username");
+
+            UserProfile userProfile = new UserProfile();
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@username", username);
+
+                    if (connection.State == ConnectionState.Closed)
+                        connection.Open();
+
+                    var reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        userProfile.UserId = reader.GetInt32(0);
+                        userProfile.UserProfileId = reader.GetInt32(1);
+                        userProfile.Username = (reader.IsDBNull(2) ? null : reader.GetString(2));
+                        userProfile.FirstName = (reader.IsDBNull(3) ? null : reader.GetString(3));
+                        userProfile.LastName = (reader.IsDBNull(4) ? null : reader.GetString(4));
+                        userProfile.Position = (reader.IsDBNull(5) ? null : reader.GetString(5));
+                        oldHASHValue = (reader.IsDBNull(6) ? null : reader.GetString(6));
+                        salt = (reader.IsDBNull(7) ? null : (byte[])reader[7]);
+                    }
+
+                    bool isLogin = CompareHashValue(password, username, oldHASHValue, salt);
+
+                    if (!isLogin)
+                    {
+                        userProfile.UserId = null;
+                        userProfile.UserProfileId = null;
+                        userProfile.Username = null;
+                        userProfile.FirstName = null;
+                        userProfile.LastName = null;
+                        userProfile.Position = null;
+                    }
+
+                    connection.Close();
+                }
+            }
+
+            return userProfile;
+        }
+
+        public List<Images> PostImages(List<Images> images)
+        {
+            #region Define DataTable and Columns
+            DataTable dt = new DataTable();
+            DataColumn colInitiativeId = new DataColumn("initiative_id");
+            DataColumn colMaterial = new DataColumn("material");
+            DataColumn colAttachmentId = new DataColumn("attachment_id");
+            DataColumn colAttachmentFileName = new DataColumn("attachment_file_name");
+            DataColumn colImage = new DataColumn("image", typeof(Byte[]));
+
+            //Add Columns
+            dt.Columns.Add(colInitiativeId);
+            dt.Columns.Add(colMaterial);
+            dt.Columns.Add(colAttachmentId);
+            dt.Columns.Add(colAttachmentFileName);
+            dt.Columns.Add(colImage);
+            #endregion 
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                //using (var command = new SqlCommand(query, connection))
+                //{
+                foreach (Images i in images)
+                {
+                    DataRow row = dt.NewRow();
+                    row[colInitiativeId] = i.InitiativeId;
+                    row[colMaterial] = i.Material;
+                    row[colAttachmentId] = i.AttachmentId;
+                    row[colAttachmentFileName] = i.AttachmentFileName;
+                    row[colImage] = System.Convert.FromBase64String(i.Image);
+                    dt.Rows.Add(row);
+                }
+
+                // Create the SqlBulkCopy object. 
+                using (SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(connectionString))
+                {
+                    //Set the database table name
+                    sqlBulkCopy.DestinationTableName = "dbo.Source_Data_Mobile_Attrib_1";
+
+                    //[OPTIONAL]: Map the DataTable columns with that of the database table
+                    // Guarantee that columns are mapped correctly by defining the column mappings for the order.
+                    sqlBulkCopy.ColumnMappings.Add("initiative_id", "initiative_id");
+                    sqlBulkCopy.ColumnMappings.Add("material", "material");
+                    sqlBulkCopy.ColumnMappings.Add("attachment_id", "attachment_id");
+                    sqlBulkCopy.ColumnMappings.Add("attachment_file_name", "attachment_file_name");
+                    sqlBulkCopy.ColumnMappings.Add("image", "image");
+                    connection.Open();
+                    sqlBulkCopy.WriteToServer(dt);
+                    connection.Close();
+                }
+            }
+
+            return images;
+        }
+
+        public List<Files> PostFiles(List<Files> files)
+        {
+            DataTable dt = new DataTable();
+            DataColumn colInitiativeId = new DataColumn("initiative_id");
+            DataColumn colMaterial = new DataColumn("material");
+            DataColumn colAttachmentId = new DataColumn("attachment_id");
+            DataColumn colAttachmentFileName = new DataColumn("attachment_file_name");
+            DataColumn colBranchId = new DataColumn("branch_id");
+            DataColumn colAttachmentType = new DataColumn("attachment_type");
+            DataColumn colAttachment = new DataColumn("attachment", typeof(byte[]));
+            DataColumn colWeekNo = new DataColumn("week_no");
+            DataColumn colMonthNo = new DataColumn("month_no");
+            DataColumn colCapturedBy = new DataColumn("captured_by");
+            DataColumn colCapturedDate = new DataColumn("captured_date");
+            DataColumn colSyncAt = new DataColumn("sync_at");
+
+            dt.Columns.Add(colInitiativeId);
+            dt.Columns.Add(colMaterial);
+            dt.Columns.Add(colAttachmentId);
+            dt.Columns.Add(colAttachmentFileName);
+            dt.Columns.Add(colBranchId);
+            dt.Columns.Add(colAttachmentType);
+            dt.Columns.Add(colAttachment);
+            dt.Columns.Add(colWeekNo);
+            dt.Columns.Add(colMonthNo);
+            dt.Columns.Add(colCapturedBy);
+            dt.Columns.Add(colCapturedDate);
+            dt.Columns.Add(colSyncAt);
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                //using (var command = new SqlCommand(query, connection))
+                //{
+                foreach (Files i in files)
+                {
+                    DataRow row = dt.NewRow();
+                    row[colInitiativeId] = i.InitiativeId;
+                    row[colMaterial] = i.Material;
+                    row[colAttachmentId] = i.AttachmentId;
+                    row[colAttachmentFileName] = i.AttachmentFileName;
+                    row[colBranchId] = i.BranchId;
+                    row[colAttachmentType] = i.AttachmentType;
+                    row[colAttachment] = System.Convert.FromBase64String(i.Attachment);
+                    row[colWeekNo] = i.WeekNo;
+                    row[colMonthNo] = i.MonthNo;
+                    row[colCapturedBy] = i.CapturedBy;
+                    row[colCapturedDate] = i.CapturedDate;
+                    row[colSyncAt] = i.SyncAt;
+                    dt.Rows.Add(row);
+                }
+
+                // Create the SqlBulkCopy object. 
+                using (SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(connectionString))
+                {
+                    //Set the database table name
+                    sqlBulkCopy.DestinationTableName = "dbo.Source_Data_Mobile_Attrib_1";
+
+                    //[OPTIONAL]: Map the DataTable columns with that of the database table
+                    // Guarantee that columns are mapped correctly by defining the column mappings for the order.
+                    sqlBulkCopy.ColumnMappings.Add("initiative_id", "initiative_id");
+                    sqlBulkCopy.ColumnMappings.Add("material", "material");
+                    sqlBulkCopy.ColumnMappings.Add("attachment_id", "attachment_id");
+                    sqlBulkCopy.ColumnMappings.Add("attachment_file_name", "attachment_file_name");
+                    sqlBulkCopy.ColumnMappings.Add("branch_id", "branch_id");
+                    sqlBulkCopy.ColumnMappings.Add("attachment_type", "attachment_type");
+                    sqlBulkCopy.ColumnMappings.Add("attachment", "attachment");
+                    sqlBulkCopy.ColumnMappings.Add("week_no", "week_no");
+                    sqlBulkCopy.ColumnMappings.Add("month_no", "month_no");
+                    sqlBulkCopy.ColumnMappings.Add("captured_by", "captured_by");
+                    sqlBulkCopy.ColumnMappings.Add("captured_date", "captured_date");
+                    sqlBulkCopy.ColumnMappings.Add("sync_at", "sync_at");
+
+                    connection.Open();
+                    sqlBulkCopy.WriteToServer(dt);
+                    connection.Close();
+                }
+            }
+            return files;
+        }
+
+
+        public string Error_Insert(string strError, string strSource)
+        {
+            SqlConnection sqlConn = new SqlConnection();
+            SqlCommand sqlCmd = new SqlCommand();
+
+            sqlConn.ConnectionString = connectionString;
+
+            sqlCmd.CommandText = "INSERT INTO dbo.Data_Error (Message, DateCreated, Source) VALUES (@Message, @DateCreated, @Source)";
+            sqlCmd.CommandType = CommandType.Text;
+            sqlCmd.Connection = sqlConn;
+
+            sqlCmd.Parameters.Add(new System.Data.SqlClient.SqlParameter("@Message", SqlDbType.VarChar, 999));
+            sqlCmd.Parameters.Add(new System.Data.SqlClient.SqlParameter("@DateCreated", SqlDbType.DateTime, 999));
+            sqlCmd.Parameters.Add(new System.Data.SqlClient.SqlParameter("@Source", SqlDbType.VarChar, 999));
+
+            sqlCmd.Parameters["@Message"].Value = strError;
+            sqlCmd.Parameters["@DateCreated"].Value = GetCurrentTime();
+            sqlCmd.Parameters["@Source"].Value = strSource;
+
+            try
+            {
+                sqlConn.Open();
+                sqlCmd.ExecuteNonQuery();
+            }
+            catch (Exception objExp)
+            {
+                throw objExp;
+            }
+            finally
+            {
+                if (sqlConn != null && sqlConn.State != System.Data.ConnectionState.Closed)
+                {
+                    sqlConn.Close();
+                }
+            }
+            return "success";
+        }
     }
 }
